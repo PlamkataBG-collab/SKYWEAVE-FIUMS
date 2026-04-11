@@ -1,1 +1,137 @@
-# bg_calkulator_mach
+<!DOCTYPE html>
+<html>
+<head>
+  <h1>Изчисляване на мачове без AI за по-лесно изкарване на пари</h1>
+<img src="c:\programirane\logo_Изкарай_по_лесни_пари.png" alt="bg_Zalog.com" width="104" height="142">
+
+  <style>
+    body {
+      font-family: Arial;
+      background: #0b1220;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .card {
+      background: #111c33;
+      width: 380px;
+      margin: auto;
+      padding: 20px;
+      border-radius: 18px;
+    }
+
+    input {
+      width: 90%;
+      padding: 10px;
+      margin: 5px;
+      border-radius: 10px;
+      border: none;
+    }
+
+    button {
+      width: 95%;
+      padding: 12px;
+      margin-top: 10px;
+      border-radius: 10px;
+      border: none;
+      background: #22c55e;
+      color: white;
+      font-weight: bold;
+    }
+
+    .box {
+      margin-top: 15px;
+      padding: 12px;
+      background: #0f172a;
+      border-radius: 12px;
+      text-align: left;
+    }
+
+    .score {
+      font-size: 30px;
+      font-weight: bold;
+      text-align: center;
+      margin: 10px 0;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>⚽ REAL Football Calculator</h1>
+
+<div class="card">
+
+  <input id="team1Name" placeholder="🏠 Домакин">
+  <input id="team1" type="number" step="0.01" placeholder="Коеф. домакин">
+
+  <input id="team2Name" placeholder="✈️ Гост">
+  <input id="team2" type="number" step="0.01" placeholder="Коеф. гост">
+
+  <button onclick="calc()">Изчисли</button>
+
+  <div class="box" id="result"></div>
+
+</div>
+
+<script>
+function calc() {
+
+  const n1 = document.getElementById("team1Name").value;
+  const n2 = document.getElementById("team2Name").value;
+  const t1 = parseFloat(document.getElementById("team1").value);
+  const t2 = parseFloat(document.getElementById("team2").value);
+
+  if (!n1 || !n2 || !t1 || !t2) {
+    document.getElementById("result").innerHTML = "❌ Попълни всички полета";
+    return;
+  }
+
+  // 📊 чисти вероятности
+  let p1 = 1 / t1;
+  let p2 = 1 / t2;
+
+  // 🏠 home advantage (10%)
+  p1 *= 1.10;
+
+  const total = p1 + p2;
+  p1 = p1 / total;
+  p2 = p2 / total;
+
+  // ⚽ фиксирани средни голове (без random)
+  const leagueAvgGoals = 2.6;
+
+  let g1 = leagueAvgGoals * p1 * 2;
+  let g2 = leagueAvgGoals * p2 * 2;
+
+  // детерминирано закръгляне (без random)
+  g1 = Math.round(g1);
+  g2 = Math.round(g2);
+
+  // ограничение
+  g1 = Math.min(5, Math.max(0, g1));
+  g2 = Math.min(5, Math.max(0, g2));
+
+  // 🏆 победител
+  let winner = "Равенство";
+  if (g1 > g2) winner = n1;
+  if (g2 > g1) winner = n2;
+
+  document.getElementById("result").innerHTML = `
+    🏟️ ${n1} vs ${n2}<br><br>
+
+    📊 Вероятности:<br>
+    ${n1}: ${(p1*100).toFixed(1)}%<br>
+    ${n2}: ${(p2*100).toFixed(1)}%<br><br>
+
+    ⚽ Резултат:<br>
+    <div class="score">${n1} ${g1} - ${g2} ${n2}</div>
+
+    🏆 Победител: <b>${winner}</b>
+  `;
+}
+</script>
+
+</body>
+</html>
