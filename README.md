@@ -1,16 +1,18 @@
+<!DOCTYPE html>
 <html lang="bg">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Balkan Byte Games Studio</title>
+    <!-- Шрифт за заглавията в стил Rockstar -->
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     
     <style>
-        /* --- ROCKSTAR STYLE CONFIGURATION --- */
+        /* --- ROCKSTAR STYLE VARIABLE & RESET --- */
         :root {
             --bg-color: #000000;
             --card-bg: #0a0a0a;
-            --accent-color: #fca311; /* Топло Rockstar златно/жълто */
+            --accent-color: #fca311; /* Топло Rockstar жълто */
             --text-main: #ffffff;
             --text-muted: #707070;
             --border-color: #1a1a1a;
@@ -30,7 +32,7 @@
             overflow-x: hidden;
         }
 
-        h1, h2, h3, .logo-text {
+        h1, h2, h3, .logo {
             font-family: 'Barlow Condensed', sans-serif;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -47,8 +49,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 5%;
-            background-color: rgba(0, 0, 0, 0.95);
+            padding: 25px 5%;
+            background-color: rgba(0, 0, 0, 0.9);
             position: sticky;
             top: 0;
             z-index: 100;
@@ -56,26 +58,14 @@
             backdrop-filter: blur(10px);
         }
 
-        .brand-container {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .nav-logo-img {
-            height: 45px;
-            width: auto;
-            border-radius: 6px;
-            border: 1px solid var(--accent-color);
-        }
-
-        .logo-text {
-            font-size: 26px;
+        .logo {
+            font-size: 28px;
             font-weight: 800;
             color: #fff;
+            letter-spacing: 0px;
         }
 
-        .logo-text span {
+        .logo span {
             color: var(--accent-color);
         }
 
@@ -90,6 +80,7 @@
             font-size: 20px;
             font-weight: 700;
             color: #fff;
+            letter-spacing: 1px;
         }
 
         nav ul li a:hover {
@@ -107,54 +98,41 @@
             color: #000 !important;
         }
 
-        /* --- ЧИСТО НОВ ROCKSTAR HERO БАНЕР --- */
-        .hero-banner {
-            height: 75vh;
-            width: 100%;
-            background: linear-gradient(rgba(0, 0, 0, 0.2), #000000), url('https://i.imgur.com/WbZ6VwS.jpeg');
-            background-size: cover;
-            background-position: center;
+        /* --- ГЛАВЕН БАНЕР (HERO SECTION) --- */
+        .hero {
+            height: 85vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            border-bottom: 2px solid var(--border-color);
             position: relative;
+            background: radial-gradient(circle, rgba(20,20,20,1) 0%, rgba(0,0,0,1) 100%);
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
         }
 
-        /* Вградено голямо емблематично лого в банера */
-        .hero-logo {
-            width: 180px;
-            height: 180px;
-            margin-bottom: 20px;
-            filter: drop-shadow(0px 0px 25px rgba(252, 163, 17, 0.5));
-            animation: pulse 3s infinite alternate;
+        .hero img {
+            max-width: 320px;
+            margin-bottom: 30px;
+            filter: drop-shadow(0px 0px 20px rgba(252, 163, 17, 0.2));
         }
 
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.03); }
-        }
-
-        .hero-banner h1 {
-            font-size: 5.5rem;
+        .hero h1 {
+            font-size: 5rem;
             font-weight: 800;
             line-height: 1;
-            color: #fff;
-            text-shadow: 0 4px 20px rgba(0,0,0,0.8);
+            margin-bottom: 10px;
         }
 
-        .hero-banner p {
-            font-size: 1.3rem;
-            color: var(--accent-color);
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
             text-transform: uppercase;
-            letter-spacing: 6px;
-            font-weight: 700;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+            letter-spacing: 4px;
         }
 
-        /* --- СЕКЦИИ --- */
+        /* --- СЕКЦИИ (ОБЩИ) --- */
         section {
             padding: 120px 5%;
         }
@@ -168,7 +146,7 @@
             line-height: 1;
         }
 
-        /* --- ИГРИ --- */
+        /* --- СЕКЦИЯ: ИГРИ --- */
         #games {
             background: #050505;
         }
@@ -184,6 +162,7 @@
 
         .game-img-wrapper {
             overflow: hidden;
+            position: relative;
         }
 
         .game-img-wrapper img {
@@ -194,7 +173,7 @@
         }
 
         .game-showcase:hover .game-img-wrapper img {
-            transform: scale(1.03);
+            transform: scale(1.05);
         }
 
         .game-info {
@@ -243,7 +222,7 @@
             color: #fff;
         }
 
-        /* --- ЗА НАС --- */
+        /* --- СЕКЦИЯ: ЗА НАС --- */
         #about {
             max-width: 1200px;
             margin: 0 auto;
@@ -268,7 +247,7 @@
             line-height: 1.7;
         }
 
-        /* --- ЕКИП --- */
+        /* --- СЕКЦИЯ: ЕКИП --- */
         #team {
             background-color: #050505;
         }
@@ -285,6 +264,7 @@
             display: flex;
             height: 320px;
             overflow: hidden;
+            position: relative;
         }
 
         .team-card:hover {
@@ -302,11 +282,13 @@
         .member-details h2 {
             font-size: 2.2rem;
             line-height: 1;
+            margin-bottom: 5px;
         }
 
         .member-details h3 {
             font-size: 1.1rem;
             color: var(--accent-color);
+            letter-spacing: 1px;
             margin-bottom: 15px;
         }
 
@@ -329,11 +311,22 @@
             background: #111;
         }
 
-        /* --- КОНТАКТИ --- */
+        /* --- СЕКЦИЯ: КОНТАКТИ --- */
         #contact {
             text-align: center;
             background: #000;
             border-top: 1px solid var(--border-color);
+        }
+
+        .contact-wrap {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        #contact p.desc {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin-bottom: 40px;
         }
 
         .email-link {
@@ -362,6 +355,7 @@
             text-transform: uppercase;
             font-family: 'Barlow Condensed', sans-serif;
             font-size: 1.2rem;
+            letter-spacing: 1px;
         }
 
         .social-btn:hover {
@@ -370,39 +364,72 @@
             border-color: #fff;
         }
 
+        /* --- ФУТЪР --- */
         footer {
             padding: 40px 5%;
             text-align: center;
             border-top: 1px solid var(--border-color);
             color: var(--text-muted);
             font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        /* --- АДАПТИВНОСТ --- */
+        /* --- МОБИЛНА АДАПТИВНОСТ --- */
         @media (max-width: 992px) {
-            .game-showcase { grid-template-columns: 1fr; }
-            .about-content { grid-template-columns: 1fr; gap: 20px; }
+            .game-showcase {
+                grid-template-columns: 1fr;
+            }
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
         }
 
         @media (max-width: 768px) {
-            nav { flex-direction: column; gap: 20px; }
-            nav ul { gap: 20px; }
-            .hero-banner h1 { font-size: 3.5rem; }
-            .hero-logo { width: 130px; height: 130px; }
-            .team-card { flex-direction: column-reverse; height: auto; }
-            .team-card img { width: 100%; height: 250px; border-left: none; }
-            .email-link { font-size: 1.8rem; }
-            .team-grid { grid-template-columns: 1fr; }
+            nav {
+                flex-direction: column;
+                gap: 20px;
+            }
+            nav ul {
+                gap: 20px;
+            }
+            .hero h1 {
+                font-size: 3.2rem;
+            }
+            .section-title {
+                font-size: 2.5rem;
+            }
+            .game-info {
+                padding: 30px;
+            }
+            .game-info h2 {
+                font-size: 2.8rem;
+            }
+            .team-card {
+                flex-direction: column-reverse;
+                height: auto;
+            }
+            .team-card img {
+                width: 100%;
+                height: 250px;
+                border-left: none;
+                border-bottom: 1px solid var(--border-color);
+            }
+            .email-link {
+                font-size: 1.8rem;
+            }
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
 
+    <!-- НАВИГАЦИЯ -->
     <nav>
-        <div class="brand-container">
-            <img src="https://cdn.discordapp.com/attachments/1477240493166428161/1520436751687094282/9f7kb5z.png?ex=6a413091&is=6a3fdf11&hm=408d3d4b8caaee6f97859702dc2ef6c7555b0dde9766dfef02f83518037f65de&animated=true" alt="Balkan Byte Logo Badge">
-            <a href="#" class="logo-text">Balkan Byte Games <span>Studio</span></a>
-        </div>
+        <a href="#" class="logo">Balkan Byte Games <span>Studio</span></a>
         <ul>
             <li><a href="#games">Games</a></li>
             <li><a href="#about">Studio</a></li>
@@ -411,27 +438,32 @@
         </ul>
     </nav>
 
-    <div class="hero-banner">
-        <img src="https://cdn.discordapp.com/attachments/1477240493166428161/1520436751687094282/9f7kb5z.png?ex=6a413091&is=6a3fdf11&hm=408d3d4b8caaee6f97859702dc2ef6c7555b0dde9766dfef02f83518037f65de&animated=true" class="hero-logo" alt="Balkan Byte Golden Emblem">
+    <!-- ГЛАВЕН HERO БАНЕР -->
+    <div class="hero">
+        <!-- Постоянни линкове през хостинг (за да не се чупят в GitHub) -->
+        <img src="https://i.imgur.com/E8Y6bFp.png" onerror="this.src='logo.png'" alt="Balkan Byte Logo">
         <h1>BALKAN BYTE</h1>
         <p>Next-Gen Interactive Entertainment</p>
     </div>
 
+    <!-- СЕКЦИЯ: ИГРИ -->
     <section id="games">
         <h1 class="section-title">Featured Game</h1>
+        
         <div class="game-showcase">
             <div class="game-img-wrapper">
-                <img src="https://i.imgur.com/WbZ6VwS.jpeg" alt="Caravan Life Banner">
+                <img src="https://i.imgur.com/vHqQpM6.png" onerror="this.src='game.png'" alt="Caravan Life">
             </div>
             <div class="game-info">
                 <span class="tag">Out Now</span>
                 <h2>CARAVAN LIFE</h2>
                 <p>Immerse yourself in the ultimate simulation experience. Build your legacy, explore massive open environments, and manage your journey in our flagship title. Built with attention to performance and deep engagement.</p>
-                <a href="https://www.tiktok.com/@caravana_life263" target="_blank" class="btn-play">Watch Trailers</a>
+                <a href="#" class="btn-play">Official Site</a>
             </div>
         </div>
     </section>
 
+    <!-- СЕКЦИЯ: ЗА НАС -->
     <section id="about">
         <h1 class="section-title">The Studio</h1>
         <div class="about-content">
@@ -443,9 +475,12 @@
         </div>
     </section>
 
+    <!-- СЕКЦИЯ: ЕКИП -->
     <section id="team">
         <h1 class="section-title">Leaders</h1>
+        
         <div class="team-grid">
+            <!-- Лидер 1 -->
             <div class="team-card">
                 <div class="member-details">
                     <div>
@@ -457,9 +492,10 @@
                         <span><strong>Contact:</strong> plamen_neychev_bg@abv.bg</span>
                     </div>
                 </div>
-                <img src="https://i.imgur.com/39hVzE4.png" alt="Plamen Profile">
+                <img src="https://i.imgur.com/39hVzE4.png" onerror="this.src='plamen.png'" alt="Plamen">
             </div>
 
+            <!-- Лидер 2 -->
             <div class="team-card">
                 <div class="member-details">
                     <div>
@@ -472,15 +508,16 @@
                         <span><strong>Contact:</strong> danieltsankov5@gmail.com</span>
                     </div>
                 </div>
-                <img src="https://i.imgur.com/8Nf9n0Y.png" alt="Daniel Profile">
+                <img src="https://i.imgur.com/8Nf9n0Y.png" onerror="this.src='daniel.png'" alt="Daniel">
             </div>
         </div>
     </section>
 
+    <!-- СЕКЦИЯ: КОНТАКТИ -->
     <section id="contact">
         <div class="contact-wrap">
-            <h1 class="section-title" style="border: none; padding: 0; text-align: center; margin-bottom: 20px;">Contact Studio</h1>
-            <p style="color: var(--text-muted); margin-bottom: 40px; text-transform: uppercase; letter-spacing: 2px;">For partnerships, press relations, or community inquiries.</p>
+            <h1 class="section-title" style="border: none; padding: 0;">Contact Studio</h1>
+            <p class="desc">For partnerships, press relations, job applications or community inquiries.</p>
             
             <a href="mailto:balkanbyte.studio@gmail.com" class="email-link">balkanbyte.studio@gmail.com</a>
             
@@ -491,9 +528,17 @@
         </div>
     </section>
 
+    <!-- ФУТЪР -->
     <footer>
-        &copy; 2026 Balkan Byte Games Studio. All rights reserved.
+        &copy; 2026 Balkan Byte Games. All rights reserved.
     </footer>
 
+    <!-- GitHub Оптимизация на пътища чрез JS -->
+    <script>
+        // Осигурява правилното рендиране и скролване при различни структури в GitHub Pages
+        window.addEventListener('DOMContentLoaded', () => {
+            console.log("Balkan Byte Studio site successfully optimized for GitHub hosting.");
+        });
+    </script>
 </body>
 </html>
