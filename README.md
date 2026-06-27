@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Balkan Byte Games Studio</title>
-    <!-- Шрифт за заглавията в стил Rockstar -->
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     
     <style>
@@ -32,6 +31,7 @@
             overflow-x: hidden;
         }
 
+        /* Заглавия в стил Rockstar (Масивни и Големи) */
         h1, h2, h3, .logo {
             font-family: 'Barlow Condensed', sans-serif;
             text-transform: uppercase;
@@ -44,7 +44,7 @@
             transition: all 0.2s ease-in-out;
         }
 
-        /* --- НАВИГАЦИЯ --- */
+        /* --- НАВИГАЦИЯ (ЧИСТ МИНИМАЛИЗЪМ) --- */
         nav {
             display: flex;
             justify-content: space-between;
@@ -146,7 +146,7 @@
             line-height: 1;
         }
 
-        /* --- СЕКЦИЯ: ИГРИ --- */
+        /* --- СЕКЦИЯ: ИГРИ (NEWEST GAME BLOCK) --- */
         #games {
             background: #050505;
         }
@@ -222,7 +222,7 @@
             color: #fff;
         }
 
-        /* --- СЕКЦИЯ: ЗА НАС --- */
+        /* --- СЕКЦИЯ: ЗА НАС (ABOUT) --- */
         #about {
             max-width: 1200px;
             margin: 0 auto;
@@ -247,7 +247,7 @@
             line-height: 1.7;
         }
 
-        /* --- СЕКЦИЯ: ЕКИП --- */
+        /* --- СЕКЦИЯ: ЕКИП (CHARACTER DOSSIERS) --- */
         #team {
             background-color: #050505;
         }
@@ -375,7 +375,7 @@
             letter-spacing: 1px;
         }
 
-        /* --- МОБИЛНА АДАПТИВНОСТ --- */
+        /* --- МЕГА АДАПТИВНОСТ --- */
         @media (max-width: 992px) {
             .game-showcase {
                 grid-template-columns: 1fr;
@@ -427,7 +427,6 @@
 </head>
 <body>
 
-    <!-- НАВИГАЦИЯ -->
     <nav>
         <a href="#" class="logo">Balkan Byte Games <span>Studio</span></a>
         <ul>
@@ -438,21 +437,18 @@
         </ul>
     </nav>
 
-    <!-- ГЛАВЕН HERO БАНЕР -->
     <div class="hero">
-        <!-- Постоянни линкове през хостинг (за да не се чупят в GitHub) -->
-        <img src="https://i.imgur.com/E8Y6bFp.png" onerror="this.src='logo.png'" alt="Balkan Byte Logo">
+        <img src="https://cdn.discordapp.com/attachments/1477240493166428161/1520436751687094282/9f7kb5z.png?ex=6a413091&is=6a3fdf11&hm=408d3d4b8caaee6f97859702dc2ef6c7555b0dde9766dfef02f83518037f65de&animated=true" alt="Balkan Byte Logo">
         <h1>BALKAN BYTE</h1>
         <p>Next-Gen Interactive Entertainment</p>
     </div>
 
-    <!-- СЕКЦИЯ: ИГРИ -->
     <section id="games">
         <h1 class="section-title">Featured Game</h1>
         
         <div class="game-showcase">
             <div class="game-img-wrapper">
-                <img src="https://i.imgur.com/vHqQpM6.png" onerror="this.src='game.png'" alt="Caravan Life">
+                <img src="https://cdn.discordapp.com/attachments/1477240493166428161/1520426323678466198/39p6jhd.png?ex=6a4126db&is=6a3fd55b&hm=9afc8106ab7818e2b9f2218ee607997d9c1a75567fcf243d56942e7c0093c220&animated=true" alt="Caravan Life">
             </div>
             <div class="game-info">
                 <span class="tag">Out Now</span>
@@ -463,7 +459,6 @@
         </div>
     </section>
 
-    <!-- СЕКЦИЯ: ЗА НАС -->
     <section id="about">
         <h1 class="section-title">The Studio</h1>
         <div class="about-content">
@@ -475,12 +470,10 @@
         </div>
     </section>
 
-    <!-- СЕКЦИЯ: ЕКИП -->
     <section id="team">
         <h1 class="section-title">Leaders</h1>
         
         <div class="team-grid">
-            <!-- Лидер 1 -->
             <div class="team-card">
                 <div class="member-details">
                     <div>
@@ -492,10 +485,9 @@
                         <span><strong>Contact:</strong> plamen_neychev_bg@abv.bg</span>
                     </div>
                 </div>
-                <img src="https://i.imgur.com/39hVzE4.png" onerror="this.src='plamen.png'" alt="Plamen">
+                <img src="https://cdn.discordapp.com/avatars/1284523435309142027/6eea63b7e02ec774b2bfca07ee09f155.webp?size=1024" alt="Plamen">
             </div>
 
-            <!-- Лидер 2 -->
             <div class="team-card">
                 <div class="member-details">
                     <div>
@@ -508,12 +500,11 @@
                         <span><strong>Contact:</strong> danieltsankov5@gmail.com</span>
                     </div>
                 </div>
-                <img src="https://i.imgur.com/8Nf9n0Y.png" onerror="this.src='daniel.png'" alt="Daniel">
+                <img src="https://cdn.discordapp.com/avatars/1473380944273608747/4b5ce3ebc454aed8dad968cebb8c24be.webp?size=1024" alt="Daniel">
             </div>
         </div>
     </section>
 
-    <!-- СЕКЦИЯ: КОНТАКТИ -->
     <section id="contact">
         <div class="contact-wrap">
             <h1 class="section-title" style="border: none; padding: 0;">Contact Studio</h1>
@@ -528,17 +519,9 @@
         </div>
     </section>
 
-    <!-- ФУТЪР -->
     <footer>
         &copy; 2026 Balkan Byte Games. All rights reserved.
     </footer>
 
-    <!-- GitHub Оптимизация на пътища чрез JS -->
-    <script>
-        // Осигурява правилното рендиране и скролване при различни структури в GitHub Pages
-        window.addEventListener('DOMContentLoaded', () => {
-            console.log("Balkan Byte Studio site successfully optimized for GitHub hosting.");
-        });
-    </script>
 </body>
 </html>
