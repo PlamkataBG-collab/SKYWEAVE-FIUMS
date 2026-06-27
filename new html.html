@@ -1,294 +1,602 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Snake Game with Restart</title>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Balkan Byte — Games Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:ital,wght=0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#060606;
+  --bg2:#0f0f0f;
+  --yellow:#ffe600;
+  --yellow-glow:rgba(255,230,0,0.35);
+  --yellow-dim:rgba(255,230,0,0.15);
+  --white:#ffffff;
+  --muted:#777777;
+  --muted2:#b3b3b3;
+  --card:#121212;
+  --border:rgba(255,230,0,0.1);
+  --border2:rgba(255,230,0,0.3);
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--white);font-family:'Inter',sans-serif;overflow-x:hidden}
+#bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
 
-  <style>
-    :root {
-      --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      --color-text-primary: #ffffff;
-      --color-text-tertiary: #a3a3a3;
-      --color-border-secondary: #262626;
-      --color-border-tertiary: #404040;
-      --border-radius-lg: 12px;
-      --border-radius-md: 6px;
-    }
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.1rem 3.5rem;
+  background:rgba(6,6,6,0.85);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  transition:background .3s;
+}
+.logo{
+  font-family:'Orbitron',sans-serif;font-weight:900;font-size:1.15rem;
+  letter-spacing:.1em;color:var(--white);text-decoration:none;
+}
+.logo em{color:var(--yellow);font-style:normal;text-shadow:0 0 10px var(--yellow-glow)}
+nav ul{display:flex;gap:2.5rem;list-style:none}
+nav a{text-decoration:none;color:var(--muted2);font-size:.8rem;font-weight:500;
+  letter-spacing:.08em;text-transform:uppercase;transition:color .2s}
+nav a:hover{color:var(--yellow)}
+.nav-cta{
+  padding:.5rem 1.3rem;border:1px solid var(--yellow);border-radius:3px;
+  color:var(--yellow)!important;font-size:.75rem!important;letter-spacing:.12em!important;
+  transition:background .2s,color .2s!important;
+  box-shadow:inset 0 0 4px var(--yellow-dim);
+}
+.nav-cta:hover{background:var(--yellow)!important;color:var(--bg)!important;box-shadow:0 0 15px var(--yellow-glow)}
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: #121212; color: var(--color-text-primary); }
-    
-    .wrap {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 2rem 1rem;
-      gap: 1.25rem;
-      font-family: var(--font-sans);
-    }
-    .title {
-      font-size: 13px;
-      font-weight: 500;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--color-text-tertiary);
-    }
-    .game-frame {
-      position: relative;
-      border-radius: var(--border-radius-lg);
-      overflow: hidden;
-      border: 0.5px solid var(--color-border-secondary);
-      background: #0a0a0a;
-    }
-    canvas { display: block; }
-    .overlay {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 0.75rem;
-      background: rgba(0,0,0,0.72);
-      backdrop-filter: blur(2px);
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.2s;
-    }
-    .overlay.show { opacity: 1; pointer-events: all; }
-    .overlay-title {
-      font-size: 22px;
-      font-weight: 500;
-      color: #fff;
-      letter-spacing: 0.04em;
-    }
-    .overlay-sub {
-      font-size: 13px;
-      color: rgba(255,255,255,0.5);
-    }
-    .btn-restart {
-      margin-top: 0.5rem;
-      padding: 9px 22px;
-      font-size: 14px;
-      font-weight: 500;
-      background: transparent;
-      color: #5DCAA5;
-      border: 0.5px solid #5DCAA5;
-      border-radius: var(--border-radius-md);
-      cursor: pointer;
-      letter-spacing: 0.03em;
-      transition: background 0.15s, color 0.15s;
-    }
-    .btn-restart:hover { background: #5DCAA5; color: #0a0a0a; }
-    .stats {
-      display: flex;
-      gap: 2rem;
-      align-items: center;
-    }
-    .stat {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 2px;
-    }
-    .stat-label {
-      font-size: 11px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--color-text-tertiary);
-    }
-    .stat-value {
-      font-size: 22px;
-      font-weight: 500;
-      color: var(--color-text-primary);
-      min-width: 2ch;
-      text-align: center;
-    }
-    .divider {
-      width: 0.5px;
-      height: 32px;
-      background: var(--color-border-tertiary);
-    }
-    .hint {
-      font-size: 12px;
-      color: var(--color-text-tertiary);
-      letter-spacing: 0.04em;
-    }
-    .dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #5DCAA5; margin-right: 6px; vertical-align: middle; }
-  </style>
+/* HERO */
+#hero{
+  min-height:100vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;padding:8rem 2rem 5rem;position:relative;z-index:1;
+}
+.badge{
+  display:inline-flex;align-items:center;gap:.5rem;
+  padding:.35rem 1rem;border:1px solid var(--border2);border-radius:20px;
+  font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--yellow);
+  margin-bottom:2rem;opacity:0;animation:fadeUp .7s .2s forwards;
+  background:rgba(255,230,0,0.03);
+}
+.badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--yellow);
+  box-shadow:0 0 8px var(--yellow);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.5)}}
+
+h1.hero{
+  font-family:'Orbitron',sans-serif;font-weight:900;
+  font-size:clamp(3rem,8vw,7rem);line-height:1;letter-spacing:-.02em;
+  margin-bottom:1.5rem;opacity:0;animation:fadeUp .7s .4s forwards;
+}
+h1.hero .line2{display:block;color:var(--yellow);text-shadow:0 0 40px rgba(255,230,0,.45)}
+h1.hero .line3{display:block;color:var(--white);font-size:.6em;
+  font-style:italic;font-family:'Inter',sans-serif;font-weight:300;
+  letter-spacing:.1em;margin-top:.3em}
+
+.hero-desc{
+  max-width:520px;color:var(--muted2);font-size:1rem;line-height:1.8;
+  margin-bottom:3rem;opacity:0;animation:fadeUp .7s .6s forwards;
+}
+
+.hero-btns{display:flex;gap:1rem;justify-content:center;
+  opacity:0;animation:fadeUp .7s .8s forwards}
+.btn-a{
+  padding:.9rem 2.4rem;background:var(--yellow);color:var(--bg);
+  font-family:'Orbitron',sans-serif;font-weight:700;font-size:.72rem;
+  letter-spacing:.14em;text-transform:uppercase;border:none;border-radius:3px;
+  cursor:pointer;text-decoration:none;
+  transition:transform .2s,box-shadow .2s;
+}
+.btn-a:hover{transform:translateY(-3px);box-shadow:0 10px 30px var(--yellow-glow)}
+.btn-b{
+  padding:.9rem 2.4rem;background:transparent;color:var(--white);
+  font-family:'Orbitron',sans-serif;font-weight:700;font-size:.72rem;
+  letter-spacing:.14em;text-transform:uppercase;
+  border:1px solid rgba(255,255,255,.2);border-radius:3px;
+  cursor:pointer;text-decoration:none;transition:border-color .2s, background .2s;
+}
+.btn-b:hover{border-color:var(--yellow);background:rgba(255,230,0,0.05)}
+
+.hero-scroll{
+  position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:.5rem;
+  color:var(--muted);font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;
+}
+.hero-scroll span{width:1px;height:50px;background:linear-gradient(to bottom,var(--yellow),transparent)}
+
+/* SECTION COMMON */
+section{position:relative;z-index:1}
+.sec-wrap{max-width:1160px;margin:0 auto;padding:7rem 3rem}
+.eyebrow{font-size:.68rem;letter-spacing:.25em;text-transform:uppercase;
+  color:var(--yellow);margin-bottom:.75rem}
+.sec-title{font-family:'Orbitron',sans-serif;font-weight:700;
+  font-size:clamp(1.8rem,3.5vw,2.6rem);line-height:1.15;margin-bottom:3.5rem}
+.accent{color:var(--yellow);text-shadow:0 0 15px rgba(255,230,0,0.2)}
+.gold{color:var(--yellow)}
+
+/* MARQUEE */
+.marquee-wrap{
+  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  overflow:hidden;padding:.85rem 0;position:relative;z-index:1;background:rgba(0,0,0,0.3);
+}
+.marquee{display:flex;gap:4rem;width:max-content;animation:scroll 22s linear infinite;
+  font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.marquee span{color:var(--yellow);opacity:.7}
+@keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* GAMES */
+#games .sec-wrap{padding-top:7rem;padding-bottom:7rem}
+.games-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem}
+@media(max-width:700px){.games-grid{grid-template-columns:1fr}}
+
+.game-card{
+  background:var(--card);border:1px solid var(--border);border-radius:6px;
+  overflow:hidden;cursor:pointer;
+  transition:transform .35s cubic-bezier(.2,.8,.3,1),border-color .3s,box-shadow .3s;
+  position:relative;
+}
+.game-card:hover{
+  transform:translateY(-8px) scale(1.01);
+  border-color:var(--border2);
+  box-shadow:0 24px 60px rgba(0,0,0,0.5), 0 0 20px rgba(255,230,0,0.05);
+}
+.game-card.featured{
+  grid-column:span 2;display:grid;grid-template-columns:1.4fr 1fr
+}
+@media(max-width:700px){.game-card.featured{grid-column:span 1;display:block}}
+
+.game-thumb{
+  width:100%;aspect-ratio:16/9;
+  display:flex;align-items:center;justify-content:center;
+  font-size:5rem;position:relative;overflow:hidden;
+}
+.game-card.featured .game-thumb{aspect-ratio:auto;height:100%;min-height:240px}
+.game-thumb-inner{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:inherit;z-index:2;
+}
+.game-thumb::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(to bottom,transparent 30%,var(--card) 100%);z-index:1;
+}
+.game-card.featured .game-thumb::after{
+  background:linear-gradient(to right,transparent 40%,var(--card) 100%);z-index:1;
+}
+
+.game-body{padding:1.5rem 1.75rem 1.75rem;position:relative;z-index:2}
+.game-card.featured .game-body{padding:2rem 2rem 2rem}
+.game-genre{
+  font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--yellow);margin-bottom:.4rem;display:flex;align-items:center;gap:.5rem
+}
+.game-genre::before{content:'';width:18px;height:1px;background:var(--yellow)}
+.game-name{font-family:'Orbitron',sans-serif;font-size:1.15rem;font-weight:700;
+  margin-bottom:.7rem;line-height:1.2}
+.game-card.featured .game-name{font-size:1.6rem;color:var(--yellow)}
+.game-desc{color:var(--muted2);font-size:.88rem;line-height:1.7}
+.game-badge{
+  display:inline-block;margin-top:1rem;padding:.3rem .9rem;
+  border:1px solid var(--border2);border-radius:2px;
+  font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--yellow);
+  background:rgba(255,230,0,0.02);
+}
+
+/* ABOUT */
+#about{background:linear-gradient(180deg,transparent,rgba(15,15,15,.9),transparent)}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center}
+@media(max-width:750px){.about-grid{grid-template-columns:1fr;gap:3rem}}
+.about-text p{color:var(--muted2);font-size:.95rem;line-height:1.85;margin-bottom:1rem}
+.about-text strong{color:var(--white);font-weight:500}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+.stat{padding:1.5rem;background:var(--card);border:1px solid var(--border);border-radius:6px;
+  border-left:2px solid var(--yellow);position:relative;overflow:hidden}
+.stat::before{content:'';position:absolute;top:0;right:0;width:60px;height:60px;
+  background:radial-gradient(circle,rgba(255,230,0,0.05) 0%,transparent 70%)}
+.stat-n{font-family:'Orbitron',sans-serif;font-size:2.4rem;font-weight:900;
+  color:var(--yellow);line-height:1;margin-bottom:.3rem}
+.stat-n sup{color:var(--white);font-size:.6em;vertical-align:super}
+.stat-l{color:var(--muted2);font-size:.78rem;letter-spacing:.05em}
+
+/* STUDIO REEL */
+#reel{
+  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  padding:5rem 3rem;text-align:center;
+  background:linear-gradient(135deg,rgba(255,230,0,0.02),transparent,rgba(255,230,0,0.02))
+}
+.reel-title{font-family:'Orbitron',sans-serif;font-size:clamp(2rem,5vw,4rem);
+  font-weight:900;letter-spacing:-.02em;line-height:1}
+.reel-title .outline{
+  -webkit-text-stroke:1px rgba(255,255,255,.2);color:transparent
+}
+
+/* TEAM */
+.team-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1rem;margin-top:3rem}
+@media(max-width:900px){.team-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:550px){.team-grid{grid-template-columns:repeat(2,1fr)}}
+.team-card{
+  background:var(--card);border:1px solid var(--border);border-radius:6px;
+  padding:1.75rem 1.25rem;text-align:center;
+  transition:border-color .3s,transform .3s;
+}
+.team-card:hover{border-color:var(--yellow);transform:translateY(-4px)}
+.ava{
+  width:64px;height:64px;border-radius:50%;margin:0 auto 1rem;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.6rem;border:1px solid var(--border);
+  background:linear-gradient(135deg,rgba(255,230,0,0.05),rgba(0,0,0,0.5))
+}
+.ava-name{font-family:'Orbitron',sans-serif;font-size:.75rem;font-weight:700;
+  margin-bottom:.35rem;line-height:1.3}
+.ava-role{color:var(--yellow);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase}
+
+/* CONTACT */
+#contact{text-align:center}
+#contact .sec-wrap{padding-bottom:8rem}
+.contact-title{font-family:'Orbitron',sans-serif;font-weight:900;
+  font-size:clamp(2rem,5vw,4rem);line-height:1.05;margin-bottom:1.5rem}
+.contact-desc{color:var(--muted2);max-width:480px;margin:0 auto 3rem;
+  line-height:1.8;font-size:.95rem}
+.contact-links{display:flex;justify-content:center;gap:.75rem;flex-wrap:wrap;margin-top:2rem}
+.cl{
+  padding:.6rem 1.4rem;border:1px solid var(--border);border-radius:3px;
+  color:var(--muted2);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;
+  text-decoration:none;transition:color .2s,border-color .2s,background .2s;
+}
+.cl:hover{color:var(--yellow);border-color:var(--yellow);background:rgba(255,230,0,0.02)}
+
+/* FOOTER */
+footer{
+  border-top:1px solid var(--border);padding:2rem 3.5rem;
+  display:flex;align-items:center;justify-content:space-between;
+  color:var(--muted);font-size:.75rem;position:relative;z-index:1;
+  flex-wrap:wrap;gap:1rem;background:rgba(0,0,0,0.5);
+}
+.footer-logo{font-family:'Orbitron',sans-serif;font-weight:900;font-size:.95rem;
+  letter-spacing:.1em;color:var(--white)}
+.footer-logo em{color:var(--yellow);font-style:normal}
+
+/* REVEAL */
+.r{opacity:0;transform:translateY(28px);transition:opacity .75s ease,transform .75s ease}
+.r.v{opacity:1;transform:none}
+.r2{transition-delay:.1s}.r3{transition-delay:.2s}.r4{transition-delay:.3s}
+
+/* ANIM */
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+
+@media(max-width:700px){
+  nav{padding:1rem 1.5rem}
+  nav ul{display:none}
+  .sec-wrap{padding:5rem 1.5rem}
+  footer{padding:1.5rem;justify-content:center;text-align:center}
+}
+</style>
 </head>
 <body>
+<canvas id="bg-canvas"></canvas>
 
-<div class="wrap">
-  <span class="title">Snake</span>
+<nav>
+  <a href="#" class="logo">BALKAN<em>BYTE</em></a>
+  <ul>
+    <li><a href="#games">Games</a></li>
+    <li><a href="#about">Studio</a></li>
+    <li><a href="#team">Team</a></li>
+    <li><a href="#contact" class="nav-cta">Contact</a></li>
+  </ul>
+</nav>
 
-  <div class="game-frame">
-    <canvas id="game" width="400" height="400"></canvas>
-    <div class="overlay" id="overlay">
-      <div class="overlay-title" id="overlayTitle">Game Over</div>
-      <div class="overlay-sub" id="overlaySub"></div>
-      <button class="btn-restart" onclick="resetGame()">Play again</button>
-    </div>
+<!-- HERO -->
+<section id="hero">
+  <div class="badge">&#9670; Independent Games Studio</div>
+  <h1 class="hero">
+    FORGED<span class="line2">IN THE BALKANS</span>
+    <span class="line3">played by the world</span>
+  </h1>
+  <p class="hero-desc">
+    We craft story-driven games rooted in Balkan myth, history, and soul —
+    brought to players everywhere.
+  </p>
+  <div class="hero-btns">
+    <a href="#games" class="btn-a">Explore Games</a>
+    <a href="#about" class="btn-b">Our Story</a>
   </div>
+  <div class="hero-scroll">SCROLL<span></span></div>
+</section>
 
-  <div class="stats">
-    <div class="stat">
-      <span class="stat-label">Score</span>
-      <span class="stat-value" id="scoreEl">0</span>
-    </div>
-    <div class="divider"></div>
-    <div class="stat">
-      <span class="stat-label">Best</span>
-      <span class="stat-value" id="bestEl">0</span>
-    </div>
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee">
+    <span>&#x25C6;</span> Thracian Shadow &nbsp;
+    <span>&#x25C6;</span> Rhodope Dominion &nbsp;
+    <span>&#x25C6;</span> Martenitsa &nbsp;
+    <span>&#x25C6;</span> Byte Frontier &nbsp;
+    <span>&#x25C6;</span> Thracian Shadow &nbsp;
+    <span>&#x25C6;</span> Rhodope Dominion &nbsp;
+    <span>&#x25C6;</span> Martenitsa &nbsp;
+    <span>&#x25C6;</span> Byte Frontier &nbsp;
+    <span>&#x25C6;</span> Thracian Shadow &nbsp;
+    <span>&#x25C6;</span> Rhodope Dominion &nbsp;
+    <span>&#x25C6;</span> Martenitsa &nbsp;
+    <span>&#x25C6;</span> Byte Frontier &nbsp;
   </div>
-
-  <span class="hint"><span class="dot"></span>arrow keys to move</span>
 </div>
 
+<!-- GAMES -->
+<section id="games">
+  <div class="sec-wrap">
+    <p class="eyebrow r">Our Portfolio</p>
+    <h2 class="sec-title r r2">Games we <span class="accent">build</span></h2>
+    <div class="games-grid">
+
+      <div class="game-card featured r">
+        <div class="game-thumb" style="background:linear-gradient(135deg,#121212 0%,#262200 100%)">
+          <div class="game-thumb-inner">&#x2694;&#xFE0F;</div>
+        </div>
+        <div class="game-body">
+          <p class="game-genre">Action RPG · PC &amp; Console</p>
+          <h3 class="game-name">Thracian Shadow</h3>
+          <p class="game-desc">
+            A dark action-RPG set in a world woven from Thracian mythology. Command ancient powers, navigate betrayal among gods, and carve your name into legend. Deep combat. Real stakes.
+          </p>
+          <span class="game-badge">In Development</span>
+        </div>
+      </div>
+
+      <div class="game-card r r2">
+        <div class="game-thumb" style="background:linear-gradient(135deg,#0a0a0a,#1f1d00)">
+          <div class="game-thumb-inner">&#x1F3F0;</div>
+        </div>
+        <div class="game-body">
+          <p class="game-genre">Strategy · PC</p>
+          <h3 class="game-name">Rhodope Dominion</h3>
+          <p class="game-desc">Build and defend a medieval Balkan kingdom. Every decision shapes your dynasty.</p>
+          <span class="game-badge">Announced</span>
+        </div>
+      </div>
+
+      <div class="game-card r r3">
+        <div class="game-thumb" style="background:linear-gradient(135deg,#141414,#2b2601)">
+          <div class="game-thumb-inner">&#x1F9F5;</div>
+        </div>
+        <div class="game-body">
+          <p class="game-genre">Puzzle · Mobile &amp; PC</p>
+          <h3 class="game-name">Martenitsa</h3>
+          <p class="game-desc">A hand-painted puzzle game about fate, threads, and the quiet magic of Balkan spring.</p>
+          <span class="game-badge">Released</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- REEL BREAK -->
+<section id="reel">
+  <p class="reel-title r">
+    <span class="outline">Small studio.</span><br/>
+    <span>Big worlds.</span>
+  </p>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="sec-wrap">
+    <div class="about-grid">
+      <div class="about-text">
+        <p class="eyebrow r">The Studio</p>
+        <h2 class="sec-title r r2">Why we <span class="gold">build</span></h2>
+        <p class="r r2">
+          <strong>Balkan Byte</strong> was born from a simple belief: this region has one of the richest, most untouched veins of mythology, history, and storytelling left in gaming.
+        </p>
+        <p class="r r3">
+          We're an <strong>independent studio based in Plovdiv</strong> — one of Europe's oldest cities — building games that feel different because they <em>are</em> different.
+        </p>
+        <p class="r r4">
+          No filler. No bloat. Just craft, intention, and a region the world hasn't fully discovered yet.
+        </p>
+      </div>
+      <div class="stats-grid r r3">
+        <div class="stat">
+          <div class="stat-n">4<sup>+</sup></div>
+          <div class="stat-l">Active projects</div>
+        </div>
+        <div class="stat">
+          <div class="stat-n">12<sup>k</sup></div>
+          <div class="stat-l">Steam wishlists</div>
+        </div>
+        <div class="stat">
+          <div class="stat-n">8</div>
+          <div class="stat-l">Team members</div>
+        </div>
+        <div class="stat">
+          <div class="stat-n">3<sup>yr</sup></div>
+          <div class="stat-l">In the industry</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section id="team">
+  <div class="sec-wrap">
+    <p class="eyebrow r">The People</p>
+    <h2 class="sec-title r r2">Behind the <span class="accent">pixels</span></h2>
+    <div class="team-grid">
+      <div class="team-card r"><div class="ava">&#x1F9D9;</div><div class="ava-name">Ivan Kostov</div><div class="ava-role">Game Director</div></div>
+      <div class="team-card r r2"><div class="ava">&#x1F3A8;</div><div class="ava-name">Maria Todorova</div><div class="ava-role">Art Director</div></div>
+      <div class="team-card r r3"><div class="ava">&#x1F4BB;</div><div class="ava-name">Stefan Petrov</div><div class="ava-role">Lead Engineer</div></div>
+      <div class="team-card r r2"><div class="ava">&#x1F3B5;</div><div class="ava-name">Elena Vasileva</div><div class="ava-role">Audio Designer</div></div>
+      <div class="team-card r r3"><div class="ava">&#x1F4D6;</div><div class="ava-name">Dimitar Yanev</div><div class="ava-role">Narrative Lead</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="sec-wrap">
+    <p class="eyebrow r">Get In Touch</p>
+    <h2 class="contact-title r r2">Let's <span class="accent">talk</span></h2>
+    <p class="contact-desc r r3">
+      Press kit, partnerships, job opportunities, or just want to share a thought — we read everything.
+    </p>
+    <a href="mailto:hello@balkanbyte.studio" class="btn-a r r3">hello@balkanbyte.studio</a>
+    <div class="contact-links r r4">
+      <a href="#" class="cl">Steam</a>
+      <a href="#" class="cl">Twitter / X</a>
+      <a href="#" class="cl">Discord</a>
+      <a href="#" class="cl">Instagram</a>
+      <a href="#" class="cl">LinkedIn</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">BALKAN<em>BYTE</em></div>
+  <span>&#169; 2026 Balkan Byte Games Studio. Crafted in Plovdiv.</span>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-  const canvas = document.getElementById("game");
-  const ctx = canvas.getContext("2d");
-  const scoreEl = document.getElementById("scoreEl");
-  const bestEl = document.getElementById("bestEl");
-  const overlay = document.getElementById("overlay");
-  const overlaySub = document.getElementById("overlaySub");
+// THREE.JS SETUP
+const canvas = document.getElementById('bg-canvas');
+const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(window.innerWidth, window.innerHeight);
 
-  const gridSize = 20;
-  const tileCount = canvas.width / gridSize;
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 0.1, 1000);
+camera.position.set(0, 5, 15);
 
-  let snake, food, dx, dy, score, best = 0, gameOver, gameLoop;
+// ── NEW BETTER BACKGROUND: INTERACTIVE PARTICLES GRID WAVE
+const COUNT_X = 65;
+const COUNT_Z = 65;
+const NUM_PARTICLES = COUNT_X * COUNT_Z;
 
-  const SNAKE_COLOR = "#5DCAA5";
-  const SNAKE_HEAD = "#9FE1CB";
-  const FOOD_COLOR = "#D85A30";
-  const GRID_COLOR = "rgba(255,255,255,0.025)";
-  const BG = "#0a0a0a";
+const positions = new Float32Array(NUM_PARTICLES * 3);
+const colors = new Float32Array(NUM_PARTICLES * 3);
 
-  function resetGame() {
-    snake = [{ x: 10, y: 10 }];
-    food = { x: 5, y: 5 };
-    dx = 0;
-    dy = 0;
-    score = 0;
-    gameOver = false;
-    scoreEl.textContent = "0";
-    overlay.classList.remove("show");
-    
-    clearTimeout(gameLoop);
-    drawGame();
+const colorYellow = new THREE.Color('#ffe600');
+const colorDark = new THREE.Color('#332e00');
+
+let index = 0;
+for (let x = 0; x < COUNT_X; x++) {
+  for (let z = 0; z < COUNT_Z; z++) {
+    // Center the grid around (0,0,0)
+    positions[index * 3] = (x - COUNT_X / 2) * 0.75; 
+    positions[index * 3 + 1] = 0;                    
+    positions[index * 3 + 2] = (z - COUNT_Z / 2) * 0.75; 
+
+    // Gradient colors based on position
+    const mixRatio = (x / COUNT_X) * (z / COUNT_Z);
+    const c = new THREE.Color().lerpColors(colorDark, colorYellow, mixRatio);
+    colors[index * 3] = c.r;
+    colors[index * 3 + 1] = c.g;
+    colors[index * 3 + 2] = c.b;
+
+    index++;
   }
+}
 
-  function drawGame() {
-    if (gameOver) {
-      if (score > best) {
-        best = score;
-        bestEl.textContent = best;
-      }
-      overlaySub.textContent = "Score: " + score;
-      overlay.classList.add("show");
-      return;
+const geometry = new THREE.BufferGeometry();
+geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+// Custom Shader Material for clean neon circular particles
+const material = new THREE.ShaderMaterial({
+  vertexColors: true,
+  transparent: true,
+  depthWrite: false,
+  blending: THREE.AdditiveBlending,
+  vertexShader: `
+    varying vec3 vColor;
+    void main() {
+      vColor = color;
+      vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+      gl_PointSize = 10.0 * (300.0 / -mvPosition.z);
+      gl_Position = projectionMatrix * mvPosition;
     }
-
-    clearScreen();
-    drawGrid();
-    moveSnake();
-    drawFood();
-    drawSnake();
-    checkCollision();
-
-    gameLoop = setTimeout(drawGame, 100);
-  }
-
-  function clearScreen() {
-    ctx.fillStyle = BG;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-  }
-
-  function drawGrid() {
-    ctx.strokeStyle = GRID_COLOR;
-    ctx.lineWidth = 0.5;
-    for (let x = 0; x <= canvas.width; x += gridSize) {
-      ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
+  `,
+  fragmentShader: `
+    varying vec3 vColor;
+    void main() {
+      float dist = length(gl_PointCoord - vec2(0.5));
+      if (dist > 0.5) discard;
+      float alpha = smoothstep(0.5, 0.1, dist) * 0.45;
+      gl_FragColor = vec4(vColor, alpha);
     }
-    for (let y = 0; y <= canvas.height; y += gridSize) {
-      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
-    }
-  }
+  `
+});
 
-  function drawSnake() {
-    snake.forEach((part, i) => {
-      const isHead = i === 0;
-      ctx.fillStyle = isHead ? SNAKE_HEAD : SNAKE_COLOR;
-      ctx.fillRect(part.x * gridSize + 1, part.y * gridSize + 1, gridSize - 2, gridSize - 2);
-    });
-  }
+const particleSystem = new THREE.Points(geometry, material);
+scene.add(particleSystem);
 
-  function moveSnake() {
-    if (dx === 0 && dy === 0) return;
+// ── MOUSE INTERACTION
+const mouse = { x: 0, y: 0, targetX: 0, targetY: 0 };
+document.addEventListener('mousemove', (e) => {
+  mouse.targetX = (e.clientX / window.innerWidth - 0.5) * 2;
+  mouse.targetY = -(e.clientY / window.innerHeight - 0.5) * 2;
+});
 
-    const head = { x: snake[0].x + dx, y: snake[0].y + dy };
-    snake.unshift(head);
+// ── RESIZE HANDLER
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
 
-    if (head.x === food.x && head.y === food.y) {
-      score++;
-      scoreEl.textContent = score;
-      generateFood();
-    } else {
-      snake.pop();
-    }
-  }
+// ── ANIMATION LOOP
+const clock = new THREE.Clock();
 
-  function drawFood() {
-    ctx.fillStyle = FOOD_COLOR;
-    ctx.fillRect(food.x * gridSize + 1, food.y * gridSize + 1, gridSize - 2, gridSize - 2);
-  }
+function animate() {
+  requestAnimationFrame(animate);
+  const elapsed = clock.getElapsedTime();
 
-  function generateFood() {
-    // Ensure food doesn't spawn on top of the snake
-    let newFoodPos;
-    let onSnake = true;
-    
-    while (onSnake) {
-      newFoodPos = {
-        x: Math.floor(Math.random() * tileCount),
-        y: Math.floor(Math.random() * tileCount)
-      };
-      onSnake = snake.some(part => part.x === newFoodPos.x && part.y === newFoodPos.y);
-    }
-    food = newFoodPos;
-  }
+  // Smooth mouse interpolation
+  mouse.x += (mouse.targetX - mouse.x) * 0.05;
+  mouse.y += (mouse.targetY - mouse.y) * 0.05;
 
-  function checkCollision() {
-    const head = snake[0];
-    
-    // Walls
-    if (head.x < 0 || head.y < 0 || head.x >= tileCount || head.y >= tileCount) {
-      gameOver = true;
-    }
+  // Animate the grid waves dynamically
+  const posAttribute = geometry.attributes.position;
+  let idx = 0;
+  for (let x = 0; x < COUNT_X; x++) {
+    for (let z = 0; z < COUNT_Z; z++) {
+      // Calculate wave height using sine/cosine combinations
+      const xFactor = Math.sin(x * 0.2 + elapsed * 1.2);
+      const zFactor = Math.cos(z * 0.2 + elapsed * 1.2);
+      
+      // Interactive mouse distortion based on distance
+      const posX = posAttribute.array[idx * 3];
+      const posZ = posAttribute.array[idx * 3 + 2];
+      const distToMouse = Math.sqrt(Math.pow(posX - mouse.x * 10, 2) + Math.pow(posZ + mouse.y * 10, 2));
+      const mouseInfluence = Math.max(0, (10 - distToMouse) * 0.12);
 
-    // Self
-    for (let i = 1; i < snake.length; i++) {
-      if (head.x === snake[i].x && head.y === snake[i].y) {
-        gameOver = true;
-      }
+      posAttribute.array[idx * 3 + 1] = (xFactor * zFactor) * 0.8 + mouseInfluence;
+      idx++;
     }
   }
+  posAttribute.needsUpdate = true;
 
-  window.addEventListener("keydown", e => {
-    if(["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].includes(e.code)) {
-      e.preventDefault();
-    }
+  // Subtle global environment adjustments via camera
+  particleSystem.rotation.y = elapsed * 0.02;
+  camera.position.x += (mouse.x * 4 - camera.position.x) * 0.03;
+  camera.position.y += ((5 + mouse.y * 3) - camera.position.y) * 0.03;
+  camera.lookAt(0, -1, 0);
 
-    // Added safety check: Don't allow moving backwards into yourself if the snake is moving
-    if (e.code === "ArrowUp" && dy !== 1) { dx = 0; dy = -1; }
-    if (e.code === "ArrowDown" && dy !== -1) { dx = 0; dy = 1; }
-    if (e.code === "ArrowLeft" && dx !== 1) { dx = -1; dy = 0; }
-    if (e.code === "ArrowRight" && dx !== -1) { dx = 1; dy = 0; }
-  });
+  renderer.render(scene, camera);
+}
+animate();
 
-  resetGame();
+// ── SCROLL REVEAL
+const els = document.querySelectorAll('.r');
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('v'); io.unobserve(e.target); } });
+}, { threshold: .12 });
+els.forEach(el => io.observe(el));
 </script>
 </body>
 </html>
