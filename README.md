@@ -1,576 +1,527 @@
-
-<html lang="en">
+<!DOCTYPE html>
+<html lang="bg">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Balkan Byte — Games Studio</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght=400;700;900&family=Inter:ital,wght=0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet"/>
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#060606;
-  --bg2:#0f0f0f;
-  --yellow:#ffe600;
-  --yellow-glow:rgba(255,230,0,0.35);
-  --yellow-dim:rgba(255,230,0,0.15);
-  --white:#ffffff;
-  --muted:#777777;
-  --muted2:#b3b3b3;
-  --card:#121212;
-  --border:rgba(255,230,0,0.1);
-  --border2:rgba(255,230,0,0.3);
-}
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--white);font-family:'Inter',sans-serif;overflow-x:hidden}
-#bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Balkan Byte Games Studio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- ROCKSTAR STYLE VARIABLE & RESET --- */
+        :root {
+            --bg-color: #000000;
+            --card-bg: #0a0a0a;
+            --accent-color: #fca311; /* Топло Rockstar жълто */
+            --text-main: #ffffff;
+            --text-muted: #707070;
+            --border-color: #1a1a1a;
+        }
 
-/* NAV */
-nav{
-  position:fixed;top:0;left:0;right:0;z-index:100;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:1.1rem 3.5rem;
-  background:rgba(6,6,6,0.85);
-  backdrop-filter:blur(20px);
-  border-bottom:1px solid var(--border);
-  transition:background .3s;
-}
-.logo{
-  font-family:'Orbitron',sans-serif;font-weight:900;font-size:1.15rem;
-  letter-spacing:.1em;color:var(--white);text-decoration:none;
-}
-.logo em{color:var(--yellow);font-style:normal;text-shadow:0 0 10px var(--yellow-glow)}
-nav ul{display:flex;gap:2.5rem;list-style:none}
-nav a{text-decoration:none;color:var(--muted2);font-size:.8rem;font-weight:500;
-  letter-spacing:.08em;text-transform:uppercase;transition:color .2s}
-nav a:hover{color:var(--yellow)}
-.nav-cta{
-  padding:.5rem 1.3rem;border:1px solid var(--yellow);border-radius:3px;
-  color:var(--yellow)!important;font-size:.75rem!important;letter-spacing:.12em!important;
-  transition:background .2s,color .2s!important;
-  box-shadow:inset 0 0 4px var(--yellow-dim);
-}
-.nav-cta:hover{background:var(--yellow)!important;color:var(--bg)!important;box-shadow:0 0 15px var(--yellow-glow)}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+            scroll-behavior: smooth;
+        }
 
-/* HERO */
-#hero{
-  min-height:100vh;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
-  text-align:center;padding:8rem 2rem 5rem;position:relative;z-index:1;
-}
-.badge{
-  display:inline-flex;align-items:center;gap:.5rem;
-  padding:.35rem 1rem;border:1px solid var(--border2);border-radius:20px;
-  font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--yellow);
-  margin-bottom:2rem;opacity:0;animation:fadeUp .7s .2s forwards;
-  background:rgba(255,230,0,0.03);
-}
-.badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--yellow);
-  box-shadow:0 0 8px var(--yellow);animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.5)}}
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
 
-h1.hero{
-  font-family:'Orbitron',sans-serif;font-weight:900;
-  font-size:clamp(3rem,8vw,7rem);line-height:1;letter-spacing:-.02em;
-  margin-bottom:1.5rem;opacity:0;animation:fadeUp .7s .4s forwards;
-}
-h1.hero .line2{display:block;color:var(--yellow);text-shadow:0 0 40px rgba(255,230,0,.45)}
-h1.hero .line3{display:block;color:var(--white);font-size:.6em;
-  font-style:italic;font-family:'Inter',sans-serif;font-weight:300;
-  letter-spacing:.1em;margin-top:.3em}
+        /* Заглавия в стил Rockstar (Масивни и Големи) */
+        h1, h2, h3, .logo {
+            font-family: 'Barlow Condensed', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
 
-.hero-desc{
-  max-width:520px;color:var(--muted2);font-size:1rem;line-height:1.8;
-  margin-bottom:3rem;opacity:0;animation:fadeUp .7s .6s forwards;
-}
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.2s ease-in-out;
+        }
 
-.hero-btns{display:flex;gap:1rem;justify-content:center;
-  opacity:0;animation:fadeUp .7s .8s forwards}
-.btn-a{
-  padding:.9rem 2.4rem;background:var(--yellow);color:var(--bg);
-  font-family:'Orbitron',sans-serif;font-weight:700;font-size:.72rem;
-  letter-spacing:.14em;text-transform:uppercase;border:none;border-radius:3px;
-  cursor:pointer;text-decoration:none;
-  transition:transform .2s,box-shadow .2s;
-}
-.btn-a:hover{transform:translateY(-3px);box-shadow:0 10px 30px var(--yellow-glow)}
-.btn-b{
-  padding:.9rem 2.4rem;background:transparent;color:var(--white);
-  font-family:'Orbitron',sans-serif;font-weight:700;font-size:.72rem;
-  letter-spacing:.14em;text-transform:uppercase;
-  border:1px solid rgba(255,255,255,.2);border-radius:3px;
-  cursor:pointer;text-decoration:none;transition:border-color .2s, background .2s;
-}
-.btn-b:hover{border-color:var(--yellow);background:rgba(255,230,0,0.05)}
+        /* --- НАВИГАЦИЯ (ЧИСТ МИНИМАЛИЗЪМ) --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 5%;
+            background-color: rgba(0, 0, 0, 0.9);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
+        }
 
-.hero-scroll{
-  position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);
-  display:flex;flex-direction:column;align-items:center;gap:.5rem;
-  color:var(--muted);font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;
-}
-.hero-scroll span{width:1px;height:50px;background:linear-gradient(to bottom,var(--yellow),transparent)}
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: 0px;
+        }
 
-/* SECTION COMMON */
-section{position:relative;z-index:1}
-.sec-wrap{max-width:1160px;margin:0 auto;padding:7rem 3rem}
-.eyebrow{font-size:.68rem;letter-spacing:.25em;text-transform:uppercase;
-  color:var(--yellow);margin-bottom:.75rem}
-.sec-title{font-family:'Orbitron',sans-serif;font-weight:700;
-  font-size:clamp(1.8rem,3.5vw,2.6rem);line-height:1.15;margin-bottom:3.5rem}
-.accent{color:var(--yellow);text-shadow:0 0 15px rgba(255,230,0,0.2)}
-.gold{color:var(--yellow)}
+        .logo span {
+            color: var(--accent-color);
+        }
 
-/* MARQUEE */
-.marquee-wrap{
-  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
-  overflow:hidden;padding:.85rem 0;position:relative;z-index:1;background:rgba(0,0,0,0.3);
-}
-.marquee{display:flex;gap:4rem;width:max-content;animation:scroll 22s linear infinite;
-  font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
-.marquee span{color:var(--yellow);opacity:.7}
-@keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 40px;
+        }
 
-/* GAMES */
-#games .sec-wrap{padding-top:7rem;padding-bottom:7rem}
-.games-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem}
-@media(max-width:700px){.games-grid{grid-template-columns:1fr}}
+        nav ul li a {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 1px;
+        }
 
-.game-card{
-  background:var(--card);border:1px solid var(--border);border-radius:6px;
-  overflow:hidden;cursor:pointer;
-  transition:transform .35s cubic-bezier(.2,.8,.3,1),border-color .3s,box-shadow .3s;
-  position:relative;
-}
-.game-card:hover{
-  transform:translateY(-8px) scale(1.01);
-  border-color:var(--border2);
-  box-shadow:0 24px 60px rgba(0,0,0,0.5), 0 0 20px rgba(255,230,0,0.05);
-}
-.game-card.featured{
-  grid-column:span 2;display:grid;grid-template-columns:1.4fr 1fr
-}
-@media(max-width:700px){.game-card.featured{grid-column:span 1;display:block}}
+        nav ul li a:hover {
+            color: var(--accent-color);
+        }
 
-.game-thumb{
-  width:100%;aspect-ratio:16/9;
-  display:flex;align-items:center;justify-content:center;
-  font-size:5rem;position:relative;overflow:hidden;
-}
-.game-card.featured .game-thumb{aspect-ratio:auto;height:100%;min-height:240px}
-.game-thumb-inner{
-  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:inherit;z-index:2;
-}
-.game-thumb::after{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(to bottom,transparent 30%,var(--card) 100%);z-index:1;
-}
-.game-card.featured .game-thumb::after{
-  background:linear-gradient(to right,transparent 40%,var(--card) 100%);z-index:1;
-}
+        .nav-cta {
+            border: 2px solid var(--accent-color);
+            padding: 5px 15px;
+            color: var(--accent-color) !important;
+        }
 
-.game-body{padding:1.5rem 1.75rem 1.75rem;position:relative;z-index:2}
-.game-card.featured .game-body{padding:2rem 2rem 2rem}
-.game-genre{
-  font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;
-  color:var(--yellow);margin-bottom:.4rem;display:flex;align-items:center;gap:.5rem
-}
-.game-genre::before{content:'';width:18px;height:1px;background:var(--yellow)}
-.game-name{font-family:'Orbitron',sans-serif;font-size:1.15rem;font-weight:700;
-  margin-bottom:.7rem;line-height:1.2}
-.game-card.featured .game-name{font-size:1.6rem;color:var(--yellow)}
-.game-desc{color:var(--muted2);font-size:.88rem;line-height:1.7}
-.game-badge{
-  display:inline-block;margin-top:1rem;padding:.3rem .9rem;
-  border:1px solid var(--border2);border-radius:2px;
-  font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--yellow);
-  background:rgba(255,230,0,0.02);
-}
+        .nav-cta:hover {
+            background: var(--accent-color);
+            color: #000 !important;
+        }
 
-/* ABOUT */
-#about{background:linear-gradient(180deg,transparent,rgba(15,15,15,.9),transparent)}
-.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center}
-@media(max-width:750px){.about-grid{grid-template-columns:1fr;gap:3rem}}
-.about-text p{color:var(--muted2);font-size:.95rem;line-height:1.85;margin-bottom:1rem}
-.about-text strong{color:var(--white);font-weight:500}
-.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
-.stat{padding:1.5rem;background:var(--card);border:1px solid var(--border);border-radius:6px;
-  border-left:2px solid var(--yellow);position:relative;overflow:hidden}
-.stat::before{content:'';position:absolute;top:0;right:0;width:60px;height:60px;
-  background:radial-gradient(circle,rgba(255,230,0,0.05) 0%,transparent 70%)}
-.stat-n{font-family:'Orbitron',sans-serif;font-size:2.4rem;font-weight:900;
-  color:var(--yellow);line-height:1;margin-bottom:.3rem}
-.stat-n sup{color:var(--white);font-size:.6em;vertical-align:super}
-.stat-l{color:var(--muted2);font-size:.78rem;letter-spacing:.05em}
+        /* --- ГЛАВЕН БАНЕР (HERO SECTION) --- */
+        .hero {
+            height: 85vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            background: radial-gradient(circle, rgba(20,20,20,1) 0%, rgba(0,0,0,1) 100%);
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
 
-/* STUDIO REEL */
-#reel{
-  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
-  padding:5rem 3rem;text-align:center;
-  background:linear-gradient(135deg,rgba(255,230,0,0.02),transparent,rgba(255,230,0,0.02))
-}
-.reel-title{font-family:'Orbitron',sans-serif;font-size:clamp(2rem,5vw,4rem);
-  font-weight:900;letter-spacing:-.02em;line-height:1}
-.reel-title .outline{
-  -webkit-text-stroke:1px rgba(255,255,255,.2);color:transparent
-}
+        .hero img {
+            max-width: 320px;
+            margin-bottom: 30px;
+            filter: drop-shadow(0px 0px 20px rgba(252, 163, 17, 0.2));
+        }
 
-/* TEAM */
-.team-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1rem;margin-top:3rem}
-@media(max-width:900px){.team-grid{grid-template-columns:repeat(3,1fr)}}
-@media(max-width:550px){.team-grid{grid-template-columns:repeat(2,1fr)}}
-.team-card{
-  background:var(--card);border:1px solid var(--border);border-radius:6px;
-  padding:1.75rem 1.25rem;text-align:center;
-  transition:border-color .3s,transform .3s;
-}
-.team-card:hover{border-color:var(--yellow);transform:translateY(-4px)}
-.ava{
-  width:64px;height:64px;border-radius:50%;margin:0 auto 1rem;
-  display:flex;align-items:center;justify-content:center;
-  font-size:1.6rem;border:1px solid var(--border);
-  background:linear-gradient(135deg,rgba(255,230,0,0.05),rgba(0,0,0,0.5))
-}
-.ava-name{font-family:'Orbitron',sans-serif;font-size:.75rem;font-weight:700;
-  margin-bottom:.35rem;line-height:1.3}
-.ava-role{color:var(--yellow);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase}
+        .hero h1 {
+            font-size: 5rem;
+            font-weight: 800;
+            line-height: 1;
+            margin-bottom: 10px;
+        }
 
-/* CONTACT */
-#contact{text-align:center}
-#contact .sec-wrap{padding-bottom:8rem}
-.contact-title{font-family:'Orbitron',sans-serif;font-weight:900;
-  font-size:clamp(2rem,5vw,4rem);line-height:1.05;margin-bottom:1.5rem}
-.contact-desc{color:var(--muted2);max-width:480px;margin:0 auto 3rem;
-  line-height:1.8;font-size:.95rem}
-.contact-links{display:flex;justify-content:center;gap:.75rem;flex-wrap:wrap;margin-top:2rem}
-.cl{
-  padding:.6rem 1.4rem;border:1px solid var(--border);border-radius:3px;
-  color:var(--muted2);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;
-  text-decoration:none;transition:color .2s,border-color .2s,background .2s;
-}
-.cl:hover{color:var(--yellow);border-color:var(--yellow);background:rgba(255,230,0,0.02)}
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+        }
 
-/* FOOTER */
-footer{
-  border-top:1px solid var(--border);padding:2rem 3.5rem;
-  display:flex;align-items:center;justify-content:space-between;
-  color:var(--muted);font-size:.75rem;position:relative;z-index:1;
-  flex-wrap:wrap;gap:1rem;background:rgba(0,0,0,0.5);
-}
-.footer-logo{font-family:'Orbitron',sans-serif;font-weight:900;font-size:.95rem;
-  letter-spacing:.1em;color:var(--white)}
-.footer-logo em{color:var(--yellow);font-style:normal}
+        /* --- СЕКЦИИ (ОБЩИ) --- */
+        section {
+            padding: 120px 5%;
+        }
 
-/* REVEAL */
-.r{opacity:0;transform:translateY(28px);transition:opacity .75s ease,transform .75s ease}
-.r.v{opacity:1;transform:none}
-.r2{transition-delay:.1s}.r3{transition-delay:.2s}.r4{transition-delay:.3s}
+        .section-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 50px;
+            border-left: 6px solid var(--accent-color);
+            padding-left: 20px;
+            line-height: 1;
+        }
 
-/* ANIM */
-@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+        /* --- СЕКЦИЯ: ИГРИ (NEWEST GAME BLOCK) --- */
+        #games {
+            background: #050505;
+        }
 
-@media(max-width:700px){
-  nav{padding:1rem 1.5rem}
-  nav ul{display:none}
-  .sec-wrap{padding:5rem 1.5rem}
-  footer{padding:1.5rem;justify-content:center;text-align:center}
-}
-</style>
+        .game-showcase {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .game-img-wrapper {
+            overflow: hidden;
+            position: relative;
+        }
+
+        .game-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .game-showcase:hover .game-img-wrapper img {
+            transform: scale(1.05);
+        }
+
+        .game-info {
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .game-info .tag {
+            color: var(--accent-color);
+            text-transform: uppercase;
+            font-weight: 700;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .game-info h2 {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            line-height: 1;
+        }
+
+        .game-info p {
+            color: #a0a0a0;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .btn-play {
+            align-self: flex-start;
+            background: #fff;
+            color: #000;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            padding: 12px 35px;
+            text-transform: uppercase;
+            border: 2px solid #fff;
+        }
+
+        .btn-play:hover {
+            background: transparent;
+            color: #fff;
+        }
+
+        /* --- СЕКЦИЯ: ЗА НАС (ABOUT) --- */
+        #about {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 60px;
+        }
+
+        .about-content h3 {
+            font-size: 2.5rem;
+            color: var(--accent-color);
+            line-height: 1.1;
+        }
+
+        .about-text p {
+            font-size: 1.2rem;
+            color: #c0c0c0;
+            margin-bottom: 25px;
+            line-height: 1.7;
+        }
+
+        /* --- СЕКЦИЯ: ЕКИП (CHARACTER DOSSIERS) --- */
+        #team {
+            background-color: #050505;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 30px;
+        }
+
+        .team-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            display: flex;
+            height: 320px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .team-card:hover {
+            border-color: var(--accent-color);
+        }
+
+        .member-details {
+            padding: 30px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .member-details h2 {
+            font-size: 2.2rem;
+            line-height: 1;
+            margin-bottom: 5px;
+        }
+
+        .member-details h3 {
+            font-size: 1.1rem;
+            color: var(--accent-color);
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        .member-meta {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .member-meta span {
+            color: #fff;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .team-card img {
+            width: 200px;
+            height: 100%;
+            object-fit: cover;
+            border-left: 1px solid var(--border-color);
+            background: #111;
+        }
+
+        /* --- СЕКЦИЯ: КОНТАКТИ --- */
+        #contact {
+            text-align: center;
+            background: #000;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .contact-wrap {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        #contact p.desc {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin-bottom: 40px;
+        }
+
+        .email-link {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 3rem;
+            font-weight: 800;
+            color: #fff;
+            display: inline-block;
+            margin-bottom: 40px;
+        }
+
+        .email-link:hover {
+            color: var(--accent-color);
+        }
+
+        .social-row {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .social-btn {
+            border: 1px solid var(--border-color);
+            padding: 15px 40px;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+        }
+
+        .social-btn:hover {
+            background: #fff;
+            color: #000;
+            border-color: #fff;
+        }
+
+        /* --- ФУТЪР --- */
+        footer {
+            padding: 40px 5%;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* --- МЕГА АДАПТИВНОСТ --- */
+        @media (max-width: 992px) {
+            .game-showcase {
+                grid-template-columns: 1fr;
+            }
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                gap: 20px;
+            }
+            nav ul {
+                gap: 20px;
+            }
+            .hero h1 {
+                font-size: 3.2rem;
+            }
+            .section-title {
+                font-size: 2.5rem;
+            }
+            .game-info {
+                padding: 30px;
+            }
+            .game-info h2 {
+                font-size: 2.8rem;
+            }
+            .team-card {
+                flex-direction: column-reverse;
+                height: auto;
+            }
+            .team-card img {
+                width: 100%;
+                height: 250px;
+                border-left: none;
+                border-bottom: 1px solid var(--border-color);
+            }
+            .email-link {
+                font-size: 1.8rem;
+            }
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-<canvas id="bg-canvas"></canvas>
 
-<nav>
-  <a href="#" class="logo">BALKAN<em>BYTE</em></a>
-  <ul>
-    <li><a href="#games">Games</a></li>
-    <li><a href="#about">Studio</a></li>
-    <li><a href="#team">Team</a></li>
-    <li><a href="#contact" class="nav-cta">Contact</a></li>
-  </ul>
-</nav>
+    <nav>
+        <a href="#" class="logo">Balkan Byte Games <span>Studio</span></a>
+        <ul>
+            <li><a href="#games">Games</a></li>
+            <li><a href="#about">Studio</a></li>
+            <li><a href="#team">Team</a></li>
+            <li><a href="#contact" class="nav-cta">Contact</a></li>
+        </ul>
+    </nav>
 
-<!-- HERO -->
-<section id="hero">
-  <div class="badge">&#9670; Independent Games Studio</div>
-  <h1 class="hero">
-    FORGED<span class="line2">IN THE BALKANS</span>
-    <span class="line3">played by the world</span>
-  </h1>
-  <p class="hero-desc">
-    We craft story-driven games rooted in Balkan myth, history, and soul —
-    brought to players everywhere.
-  </p>
-  <div class="hero-btns">
-    <a href="#games" class="btn-a">Explore Games</a>
-    <a href="#about" class="btn-b">Our Story</a>
-  </div>
-  <div class="hero-scroll">SCROLL<span></span></div>
-</section>
-
-<!-- MARQUEE -->
-<div class="marquee-wrap">
-  <div class="marquee">
-    <span>&#x25C6;</span> Thracian Shadow &nbsp;
-    <span>&#x25C6;</span> Rhodope Dominion &nbsp;
-    <span>&#x25C6;</span> Martenitsa &nbsp;
-    <span>&#x25C6;</span> Byte Frontier &nbsp;
-    <span>&#x25C6;</span> Thracian Shadow &nbsp;
-    <span>&#x25C6;</span> Rhodope Dominion &nbsp;
-    <span>&#x25C6;</span> Martenitsa &nbsp;
-    <span>&#x25C6;</span> Byte Frontier &nbsp;
-    <span>&#x25C6;</span> Thracian Shadow &nbsp;
-    <span>&#x25C6;</span> Rhodope Dominion &nbsp;
-    <span>&#x25C6;</span> Martenitsa &nbsp;
-    <span>&#x25C6;</span> Byte Frontier &nbsp;
-  </div>
-</div>
-
-<!-- GAMES -->
-<section id="games">
-  <div class="sec-wrap">
-    <p class="eyebrow r">Our Portfolio</p>
-    <h2 class="sec-title r r2">Games we <span class="accent">build</span></h2>
-    <div class="games-grid">
-
-      <div class="game-card featured r">
-        <div class="game-thumb" style="background:linear-gradient(135deg,#121212 0%,#262200 100%)">
-          <div class="game-thumb-inner">&#x2694;&#xFE0F;</div>
-        </div>
-        <div class="game-body">
-          <p class="game-genre">Action RPG · PC &amp; Console</p>
-          <h3 class="game-name">Thracian Shadow</h3>
-          <p class="game-desc">
-            A dark action-RPG set in a world woven from Thracian mythology. Command ancient powers, navigate betrayal among gods, and carve your name into legend. Deep combat. Real stakes.
-          </p>
-          <span class="game-badge">In Development</span>
-        </div>
-      </div>
-
-      <div class="game-card r r2">
-        <div class="game-thumb" style="background:linear-gradient(135deg,#0a0a0a,#1f1d00)">
-          <div class="game-thumb-inner">&#x1F3F0;</div>
-        </div>
-        <div class="game-body">
-          <p class="game-genre">Strategy · PC</p>
-          <h3 class="game-name">Rhodope Dominion</h3>
-          <p class="game-desc">Build and defend a medieval Balkan kingdom. Every decision shapes your dynasty.</p>
-          <span class="game-badge">Announced</span>
-        </div>
-      </div>
-
-      <div class="game-card r r3">
-        <div class="game-thumb" style="background:linear-gradient(135deg,#141414,#2b2601)">
-          <div class="game-thumb-inner">&#x1F9F5;</div>
-        </div>
-        <div class="game-body">
-          <p class="game-genre">Puzzle · Mobile &amp; PC</p>
-          <h3 class="game-name">Martenitsa</h3>
-          <p class="game-desc">A hand-painted puzzle game about fate, threads, and the quiet magic of Balkan spring.</p>
-          <span class="game-badge">Released</span>
-        </div>
-      </div>
-
+    <div class="hero">
+        <img src="https://cdn.discordapp.com/attachments/1477240493166428161/1520436751687094282/9f7kb5z.png?ex=6a413091&is=6a3fdf11&hm=408d3d4b8caaee6f97859702dc2ef6c7555b0dde9766dfef02f83518037f65de&animated=true" alt="Balkan Byte Logo">
+        <h1>BALKAN BYTE</h1>
+        <p>Next-Gen Interactive Entertainment</p>
     </div>
-  </div>
-</section>
 
-<!-- REEL BREAK -->
-<section id="reel">
-  <p class="reel-title r">
-    <span class="outline">Small studio.</span><br/>
-    <span>Big worlds.</span>
-  </p>
-</section>
-
-<!-- ABOUT -->
-<section id="about">
-  <div class="sec-wrap">
-    <div class="about-grid">
-      <div class="about-text">
-        <p class="eyebrow r">The Studio</p>
-        <h2 class="sec-title r r2">Why we <span class="gold">build</span></h2>
-        <p class="r r2">
-          <strong>Balkan Byte</strong> was born from a simple belief: this region has one of the richest, most untouched veins of mythology, history, and storytelling left in gaming.
-        </p>
-        <p class="r r3">
-          We're an <strong>independent studio based in Plovdiv</strong> — one of Europe's oldest cities — building games that feel different because they <em>are</em> different.
-        </p>
-        <p class="r r4">
-          No filler. No bloat. Just craft, intention, and a region the world hasn't fully discovered yet.
-        </p>
-      </div>
-      <div class="stats-grid r r3">
-        <div class="stat">
-          <div class="stat-n">4<sup>+</sup></div>
-          <div class="stat-l">Active projects</div>
+    <section id="games">
+        <h1 class="section-title">Featured Game</h1>
+        
+        <div class="game-showcase">
+            <div class="game-img-wrapper">
+                <img src="https://cdn.discordapp.com/attachments/1477240493166428161/1520426323678466198/39p6jhd.png?ex=6a4126db&is=6a3fd55b&hm=9afc8106ab7818e2b9f2218ee607997d9c1a75567fcf243d56942e7c0093c220&animated=true" alt="Caravan Life">
+            </div>
+            <div class="game-info">
+                <span class="tag">Out Now</span>
+                <h2>CARAVAN LIFE</h2>
+                <p>Immerse yourself in the ultimate simulation experience. Build your legacy, explore massive open environments, and manage your journey in our flagship title. Built with attention to performance and deep engagement.</p>
+                <a href="#" class="btn-play">Official Site</a>
+            </div>
         </div>
-        <div class="stat">
-          <div class="stat-n">12<sup>k</sup></div>
-          <div class="stat-l">Steam wishlists</div>
+    </section>
+
+    <section id="about">
+        <h1 class="section-title">The Studio</h1>
+        <div class="about-content">
+            <h3>Meticulous craft.<br>Unforgettable stories.</h3>
+            <div class="about-text">
+                <p>We are a passionate game development studio dedicated to creating fun, innovative, and high-quality games for players around the world. Our team combines creativity, technology, and storytelling to build unforgettable gaming experiences.</p>
+                <p>From mobile and PC games to console and online multiplayer projects, we focus on delivering engaging gameplay, stunning visuals, and smooth performance. Every project is developed with attention to detail and a commitment to excellence.</p>
+            </div>
         </div>
-        <div class="stat">
-          <div class="stat-n">8</div>
-          <div class="stat-l">Team members</div>
+    </section>
+
+    <section id="team">
+        <h1 class="section-title">Leaders</h1>
+        
+        <div class="team-grid">
+            <div class="team-card">
+                <div class="member-details">
+                    <div>
+                        <h2>PLAMEN NEYCHEV</h2>
+                        <h3>CEO / Chief Programmer</h3>
+                    </div>
+                    <div class="member-meta">
+                        <span><strong>Discord:</strong> plamkatabg_top-│𝗽𝗹𝗮𝗺𝗸𝗮𝘁𝗮 ツ</span>
+                        <span><strong>Contact:</strong> plamen_neychev_bg@abv.bg</span>
+                    </div>
+                </div>
+                <img src="https://cdn.discordapp.com/avatars/1284523435309142027/6eea63b7e02ec774b2bfca07ee09f155.webp?size=1024" alt="Plamen">
+            </div>
+
+            <div class="team-card">
+                <div class="member-details">
+                    <div>
+                        <h2>DANIEL TSANKOV</h2>
+                        <h3>CEO / Marketing & Infrastructure</h3>
+                    </div>
+                    <div class="member-meta">
+                        <span><strong>Discord:</strong> dankata_94240-Dankata</span>
+                        <span><strong>Phone:</strong> +359 88 296 5409</span>
+                        <span><strong>Contact:</strong> danieltsankov5@gmail.com</span>
+                    </div>
+                </div>
+                <img src="https://cdn.discordapp.com/avatars/1473380944273608747/4b5ce3ebc454aed8dad968cebb8c24be.webp?size=1024" alt="Daniel">
+            </div>
         </div>
-        <div class="stat">
-          <div class="stat-n">3<sup>yr</sup></div>
-          <div class="stat-l">In the industry</div>
+    </section>
+
+    <section id="contact">
+        <div class="contact-wrap">
+            <h1 class="section-title" style="border: none; padding: 0;">Contact Studio</h1>
+            <p class="desc">For partnerships, press relations, job applications or community inquiries.</p>
+            
+            <a href="mailto:balkanbyte.studio@gmail.com" class="email-link">balkanbyte.studio@gmail.com</a>
+            
+            <div class="social-row">
+                <a href="https://discord.gg/Js8BRrmA" class="social-btn" target="_blank">Discord</a>
+                <a href="https://www.tiktok.com/@caravana_life263" class="social-btn" target="_blank">TikTok</a>
+            </div>
         </div>
-      </div>
-    </div>
-  </div>
-</section>
+    </section>
 
-<!-- TEAM -->
-<section id="team">
-  <div class="sec-wrap">
-    <p class="eyebrow r">The People</p>
-    <h2 class="sec-title r r2">Behind the <span class="accent">pixels</span></h2>
-    <div class="team-grid">
-      <div class="team-card r"><div class="ava">💻</div><div class="ava-name">PLAMEN NEYCHEV</div><div class="ava-role">Developer &amp; CEO</div></div>
-      <div class="team-card r r2"><div class="ava">📢</div><div class="ava-name">DANIEL TSANKOV</div><div class="ava-role">Publishing &amp; CEO</div></div>
-      <div class="team-card r r3"><div class="ava">🎨</div><div class="ava-name">Maria Todorova</div><div class="ava-role">Art Director</div></div>
-      <div class="team-card r r2"><div class="ava">🎵</div><div class="ava-name">Elena Vasileva</div><div class="ava-role">Audio Designer</div></div>
-      <div class="team-card r r3"><div class="ava">📖</div><div class="ava-name">Dimitar Yanev</div><div class="ava-role">Narrative Lead</div></div>
-    </div>
-  </div>
-</section>
+    <footer>
+        &copy; 2026 Balkan Byte Games. All rights reserved.
+    </footer>
 
-<!-- CONTACT -->
-<section id="contact">
-  <div class="sec-wrap">
-    <p class="eyebrow r">Get In Touch</p>
-    <h2 class="contact-title r r2">Let's <span class="accent">talk</span></h2>
-    <p class="contact-desc r r3">
-      Press kit, partnerships, job opportunities, or just want to share a thought — we read everything.
-    </p>
-    <a href="mailto:hello@balkanbyte.studio" class="btn-a r r3">hello@balkanbyte.studio</a>
-    <div class="contact-links r r4">
-      <a href="#" class="cl">Steam</a>
-      <a href="#" class="cl">Twitter / X</a>
-      <a href="#" class="cl">Discord</a>
-      <a href="#" class="cl">Instagram</a>
-      <a href="#" class="cl">LinkedIn</a>
-    </div>
-  </div>
-</section>
-
-<footer>
-  <div class="footer-logo">BALKAN<em>BYTE</em></div>
-  <span>&#169; 2026 Balkan Byte Games Studio. Crafted in Plovdiv.</span>
-</footer>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script>
-// THREE.JS SETUP
-const canvas = document.getElementById('bg-canvas');
-const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true});
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-renderer.setSize(window.innerWidth, window.innerHeight);
-
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(50, window.innerWidth/window.innerHeight, 0.1, 1000);
-camera.position.set(0, 0, 7);
-
-// ── СИВИ КОСТИ / ЧЕРЕП НА ЖИВОТНО (Генериран нискополигонален модел)
-const animalSkull = new THREE.Group();
-
-// Черепна кост (основна кутия/форма)
-const headGeo = new THREE.CylinderGeometry(0.8, 0.4, 2.2, 7, 3);
-const boneMat = new THREE.MeshBasicMaterial({
-  color: 0x888888, // Слав сив цвят
-  wireframe: true, 
-  transparent: true, 
-  opacity: 0.3
-});
-const headMesh = new THREE.Mesh(headGeo, boneMat);
-headMesh.rotation.x = Math.PI / 2;
-animalSkull.add(headMesh);
-
-// Рога / Разклонения на кости (Ляво и Дясно)
-const hornShape = new THREE.ConeGeometry(0.2, 1.8, 5);
-const leftHorn = new THREE.Mesh(hornShape, boneMat);
-leftHorn.position.set(-0.8, 0.8, -0.6);
-leftHorn.rotation.z = 1.1;
-leftHorn.rotation.x = -0.5;
-
-const rightHorn = leftHorn.clone();
-rightHorn.position.x = 0.8;
-rightHorn.rotation.z = -1.1;
-
-animalSkull.add(leftHorn);
-animalSkull.add(rightHorn);
-
-// Челюст
-const jawGeo = new THREE.BoxGeometry(0.7, 0.3, 1.2);
-const jaw = new THREE.Mesh(jawGeo, boneMat);
-jaw.position.set(0, -0.5, 0.5);
-animalSkull.add(jaw);
-
-// Позиционираме костите малко встрани от центъра за добър визуален дизайн зад текста
-animalSkull.position.set(2.5, 0, 0);
-scene.add(animalSkull);
-
-// Атмосферна мрежа от сиво-жълти прашинки за дълбочина
-const particlesCount = 300;
-const pGeometry = new THREE.BufferGeometry();
-const pPositions = new Float32Array(particlesCount * 3);
-for(let i=0; i<particlesCount*3; i+=3) {
-  pPositions[i] = (Math.random() - 0.5) * 15;
-  pPositions[i+1] = (Math.random() - 0.5) * 15;
-  pPositions[i+2] = (Math.random() - 0.5) * 15;
-}
-pGeometry.setAttribute('position', new THREE.BufferAttribute(pPositions, 3));
-const pMaterial = new THREE.PointsMaterial({color: 0xffe600, size: 0.03, transparent: true, opacity: 0.4});
-const particleSystem = new THREE.Points(pGeometry, pMaterial);
-scene.add(particleSystem);
-
-// ── ИНТЕРАКТИВНОСТ: КОСТИТЕ ГОНЯТ МИШКАТА
-const mouse = { x: 0, y: 0, targetX: 0, targetY: 0 };
-document.addEventListener('mousemove', (e) => {
-  // Нормализиране на координатите (-1 до 1)
-  mouse.targetX = (e.clientX / window.innerWidth - 0.5) * 2;
-  mouse.targetY = -(e.clientY / window.innerHeight - 0.5) * 2;
-});
-
-// ── РЕЗИСЕ
-window.addEventListener('resize', () => {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
-});
-
-// ── АНИМАЦИОНЕН ЦИКЪЛ
-const clock = new THREE.Clock();
-
-function animate() {
-  requestAnimationFrame(animate);
-  const elapsed = clock.getElapsedTime();
-
-  // Плавно приближаване (интерполация) до позицията на мишката
-  mouse.x += (mouse.targetX - mouse.x) * 0.05;
-  mouse.y += (mouse.targetY - mouse.y) * 0.05;
-
-  // Костите "гонят" мишката чрез промяна на ротацията си по X и Y
-  animalSkull.rotation.y = mouse.x * 0.8 + Math.sin(elapsed * 0.5) * 0.1; // леко дишане в добавка
-  animalSkull.rotation.x = -mouse.y * 0.8;
-
-  // Леко мърдане на целия обект нагоре-надолу
-  animalSkull.position.y = Math.sin(elapsed * 0.8) * 0.2;
-
-  // Движение на прашинките на заден план
-  particleSystem.rotation.y = elapsed * 0.02;
-
-  renderer.render(scene, camera);
-}
-animate();
-
-// ── SCROLL REVEAL
-const els = document.querySelectorAll('.r');
-const io = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('v'); io.unobserve(e.target); } });
-}, { threshold: .12 });
-els.forEach(el => io.observe(el));
-</script>
 </body>
 </html>
