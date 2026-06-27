@@ -400,7 +400,7 @@
 
     <nav>
         <div class="brand-container">
-            <img src="https://i.imgur.com/vHqQpM6.png" class="nav-logo-img" alt="Balkan Byte Logo Badge">
+            <img src="https://cdn.discordapp.com/attachments/1477240493166428161/1520436751687094282/9f7kb5z.png?ex=6a413091&is=6a3fdf11&hm=408d3d4b8caaee6f97859702dc2ef6c7555b0dde9766dfef02f83518037f65de&animated=true" alt="Balkan Byte Logo Badge">
             <a href="#" class="logo-text">Balkan Byte Games <span>Studio</span></a>
         </div>
         <ul>
@@ -412,7 +412,7 @@
     </nav>
 
     <div class="hero-banner">
-        <img src="https://i.imgur.com/vHqQpM6.png" class="hero-logo" alt="Balkan Byte Golden Emblem">
+        <img src="https://cdn.discordapp.com/attachments/1477240493166428161/1520436751687094282/9f7kb5z.png?ex=6a413091&is=6a3fdf11&hm=408d3d4b8caaee6f97859702dc2ef6c7555b0dde9766dfef02f83518037f65de&animated=true" class="hero-logo" alt="Balkan Byte Golden Emblem">
         <h1>BALKAN BYTE</h1>
         <p>Next-Gen Interactive Entertainment</p>
     </div>
