@@ -1,1 +1,501 @@
 
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Balkan Byte Games Studio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- ROCKSTAR STYLE CONFIGURATION --- */
+        :root {
+            --bg-color: #000000;
+            --card-bg: #0a0a0a;
+            --accent-color: #fca311; /* Топло Rockstar златно/жълто */
+            --text-main: #ffffff;
+            --text-muted: #707070;
+            --border-color: #1a1a1a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .logo-text {
+            font-family: 'Barlow Condensed', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.2s ease-in-out;
+        }
+
+        /* --- НАВИГАЦИЯ --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            background-color: rgba(0, 0, 0, 0.95);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
+        }
+
+        .brand-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .nav-logo-img {
+            height: 45px;
+            width: auto;
+            border-radius: 6px;
+            border: 1px solid var(--accent-color);
+        }
+
+        .logo-text {
+            font-size: 26px;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .logo-text span {
+            color: var(--accent-color);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 40px;
+        }
+
+        nav ul li a {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        nav ul li a:hover {
+            color: var(--accent-color);
+        }
+
+        .nav-cta {
+            border: 2px solid var(--accent-color);
+            padding: 5px 15px;
+            color: var(--accent-color) !important;
+        }
+
+        .nav-cta:hover {
+            background: var(--accent-color);
+            color: #000 !important;
+        }
+
+        /* --- ЧИСТО НОВ ROCKSTAR HERO БАНЕР --- */
+        .hero-banner {
+            height: 75vh;
+            width: 100%;
+            background: linear-gradient(rgba(0, 0, 0, 0.2), #000000), url('https://i.imgur.com/WbZ6VwS.jpeg');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            border-bottom: 2px solid var(--border-color);
+            position: relative;
+        }
+
+        /* Вградено голямо емблематично лого в банера */
+        .hero-logo {
+            width: 180px;
+            height: 180px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0px 0px 25px rgba(252, 163, 17, 0.5));
+            animation: pulse 3s infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.03); }
+        }
+
+        .hero-banner h1 {
+            font-size: 5.5rem;
+            font-weight: 800;
+            line-height: 1;
+            color: #fff;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.8);
+        }
+
+        .hero-banner p {
+            font-size: 1.3rem;
+            color: var(--accent-color);
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            font-weight: 700;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+        }
+
+        /* --- СЕКЦИИ --- */
+        section {
+            padding: 120px 5%;
+        }
+
+        .section-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 50px;
+            border-left: 6px solid var(--accent-color);
+            padding-left: 20px;
+            line-height: 1;
+        }
+
+        /* --- ИГРИ --- */
+        #games {
+            background: #050505;
+        }
+
+        .game-showcase {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .game-img-wrapper {
+            overflow: hidden;
+        }
+
+        .game-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .game-showcase:hover .game-img-wrapper img {
+            transform: scale(1.03);
+        }
+
+        .game-info {
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .game-info .tag {
+            color: var(--accent-color);
+            text-transform: uppercase;
+            font-weight: 700;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .game-info h2 {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            line-height: 1;
+        }
+
+        .game-info p {
+            color: #a0a0a0;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .btn-play {
+            align-self: flex-start;
+            background: #fff;
+            color: #000;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            padding: 12px 35px;
+            text-transform: uppercase;
+            border: 2px solid #fff;
+        }
+
+        .btn-play:hover {
+            background: transparent;
+            color: #fff;
+        }
+
+        /* --- ЗА НАС --- */
+        #about {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 60px;
+        }
+
+        .about-content h3 {
+            font-size: 2.5rem;
+            color: var(--accent-color);
+            line-height: 1.1;
+        }
+
+        .about-text p {
+            font-size: 1.2rem;
+            color: #c0c0c0;
+            margin-bottom: 25px;
+            line-height: 1.7;
+        }
+
+        /* --- ЕКИП --- */
+        #team {
+            background-color: #050505;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 30px;
+        }
+
+        .team-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            display: flex;
+            height: 320px;
+            overflow: hidden;
+        }
+
+        .team-card:hover {
+            border-color: var(--accent-color);
+        }
+
+        .member-details {
+            padding: 30px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .member-details h2 {
+            font-size: 2.2rem;
+            line-height: 1;
+        }
+
+        .member-details h3 {
+            font-size: 1.1rem;
+            color: var(--accent-color);
+            margin-bottom: 15px;
+        }
+
+        .member-meta {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .member-meta span {
+            color: #fff;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .team-card img {
+            width: 200px;
+            height: 100%;
+            object-fit: cover;
+            border-left: 1px solid var(--border-color);
+            background: #111;
+        }
+
+        /* --- КОНТАКТИ --- */
+        #contact {
+            text-align: center;
+            background: #000;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .email-link {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 3rem;
+            font-weight: 800;
+            color: #fff;
+            display: inline-block;
+            margin-bottom: 40px;
+        }
+
+        .email-link:hover {
+            color: var(--accent-color);
+        }
+
+        .social-row {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .social-btn {
+            border: 1px solid var(--border-color);
+            padding: 15px 40px;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.2rem;
+        }
+
+        .social-btn:hover {
+            background: #fff;
+            color: #000;
+            border-color: #fff;
+        }
+
+        footer {
+            padding: 40px 5%;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* --- АДАПТИВНОСТ --- */
+        @media (max-width: 992px) {
+            .game-showcase { grid-template-columns: 1fr; }
+            .about-content { grid-template-columns: 1fr; gap: 20px; }
+        }
+
+        @media (max-width: 768px) {
+            nav { flex-direction: column; gap: 20px; }
+            nav ul { gap: 20px; }
+            .hero-banner h1 { font-size: 3.5rem; }
+            .hero-logo { width: 130px; height: 130px; }
+            .team-card { flex-direction: column-reverse; height: auto; }
+            .team-card img { width: 100%; height: 250px; border-left: none; }
+            .email-link { font-size: 1.8rem; }
+            .team-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="brand-container">
+            <img src="https://i.imgur.com/vHqQpM6.png" class="nav-logo-img" alt="Balkan Byte Logo Badge">
+            <a href="#" class="logo-text">Balkan Byte Games <span>Studio</span></a>
+        </div>
+        <ul>
+            <li><a href="#games">Games</a></li>
+            <li><a href="#about">Studio</a></li>
+            <li><a href="#team">Team</a></li>
+            <li><a href="#contact" class="nav-cta">Contact</a></li>
+        </ul>
+    </nav>
+
+    <div class="hero-banner">
+        <img src="https://i.imgur.com/vHqQpM6.png" class="hero-logo" alt="Balkan Byte Golden Emblem">
+        <h1>BALKAN BYTE</h1>
+        <p>Next-Gen Interactive Entertainment</p>
+    </div>
+
+    <section id="games">
+        <h1 class="section-title">Featured Game</h1>
+        <div class="game-showcase">
+            <div class="game-img-wrapper">
+                <img src="https://i.imgur.com/WbZ6VwS.jpeg" alt="Caravan Life Banner">
+            </div>
+            <div class="game-info">
+                <span class="tag">Out Now</span>
+                <h2>CARAVAN LIFE</h2>
+                <p>Immerse yourself in the ultimate simulation experience. Build your legacy, explore massive open environments, and manage your journey in our flagship title. Built with attention to performance and deep engagement.</p>
+                <a href="https://www.tiktok.com/@caravana_life263" target="_blank" class="btn-play">Watch Trailers</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="about">
+        <h1 class="section-title">The Studio</h1>
+        <div class="about-content">
+            <h3>Meticulous craft.<br>Unforgettable stories.</h3>
+            <div class="about-text">
+                <p>We are a passionate game development studio dedicated to creating fun, innovative, and high-quality games for players around the world. Our team combines creativity, technology, and storytelling to build unforgettable gaming experiences.</p>
+                <p>From mobile and PC games to console and online multiplayer projects, we focus on delivering engaging gameplay, stunning visuals, and smooth performance. Every project is developed with attention to detail and a commitment to excellence.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="team">
+        <h1 class="section-title">Leaders</h1>
+        <div class="team-grid">
+            <div class="team-card">
+                <div class="member-details">
+                    <div>
+                        <h2>PLAMEN NEYCHEV</h2>
+                        <h3>CEO / Chief Programmer</h3>
+                    </div>
+                    <div class="member-meta">
+                        <span><strong>Discord:</strong> plamkatabg_top-│𝗽𝗹𝗮𝗺𝗸𝗮𝘁𝗮 ツ</span>
+                        <span><strong>Contact:</strong> plamen_neychev_bg@abv.bg</span>
+                    </div>
+                </div>
+                <img src="https://i.imgur.com/39hVzE4.png" alt="Plamen Profile">
+            </div>
+
+            <div class="team-card">
+                <div class="member-details">
+                    <div>
+                        <h2>DANIEL TSANKOV</h2>
+                        <h3>CEO / Marketing & Infrastructure</h3>
+                    </div>
+                    <div class="member-meta">
+                        <span><strong>Discord:</strong> dankata_94240-Dankata</span>
+                        <span><strong>Phone:</strong> +359 88 296 5409</span>
+                        <span><strong>Contact:</strong> danieltsankov5@gmail.com</span>
+                    </div>
+                </div>
+                <img src="https://i.imgur.com/8Nf9n0Y.png" alt="Daniel Profile">
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <div class="contact-wrap">
+            <h1 class="section-title" style="border: none; padding: 0; text-align: center; margin-bottom: 20px;">Contact Studio</h1>
+            <p style="color: var(--text-muted); margin-bottom: 40px; text-transform: uppercase; letter-spacing: 2px;">For partnerships, press relations, or community inquiries.</p>
+            
+            <a href="mailto:balkanbyte.studio@gmail.com" class="email-link">balkanbyte.studio@gmail.com</a>
+            
+            <div class="social-row">
+                <a href="https://discord.gg/Js8BRrmA" class="social-btn" target="_blank">Discord</a>
+                <a href="https://www.tiktok.com/@caravana_life263" class="social-btn" target="_blank">TikTok</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        &copy; 2026 Balkan Byte Games Studio. All rights reserved.
+    </footer>
+
+</body>
+</html>
