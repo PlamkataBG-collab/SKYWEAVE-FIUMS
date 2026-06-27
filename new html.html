@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Balkan Byte — Games Studio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:ital,wght=0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght=400;700;900&family=Inter:ital,wght=0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -427,11 +427,11 @@ footer{
     <p class="eyebrow r">The People</p>
     <h2 class="sec-title r r2">Behind the <span class="accent">pixels</span></h2>
     <div class="team-grid">
-      <div class="team-card r"><div class="ava">&#x1F9D9;</div><div class="ava-name">Ivan Kostov</div><div class="ava-role">Game Director</div></div>
-      <div class="team-card r r2"><div class="ava">&#x1F3A8;</div><div class="ava-name">Maria Todorova</div><div class="ava-role">Art Director</div></div>
-      <div class="team-card r r3"><div class="ava">&#x1F4BB;</div><div class="ava-name">Stefan Petrov</div><div class="ava-role">Lead Engineer</div></div>
-      <div class="team-card r r2"><div class="ava">&#x1F3B5;</div><div class="ava-name">Elena Vasileva</div><div class="ava-role">Audio Designer</div></div>
-      <div class="team-card r r3"><div class="ava">&#x1F4D6;</div><div class="ava-name">Dimitar Yanev</div><div class="ava-role">Narrative Lead</div></div>
+      <div class="team-card r"><div class="ava">💻</div><div class="ava-name">PLAMEN NEYCHEV</div><div class="ava-role">Developer &amp; CEO</div></div>
+      <div class="team-card r r2"><div class="ava">📢</div><div class="ava-name">DANIEL TSANKOV</div><div class="ava-role">Publishing &amp; CEO</div></div>
+      <div class="team-card r r3"><div class="ava">🎨</div><div class="ava-name">Maria Todorova</div><div class="ava-role">Art Director</div></div>
+      <div class="team-card r r2"><div class="ava">🎵</div><div class="ava-name">Elena Vasileva</div><div class="ava-role">Audio Designer</div></div>
+      <div class="team-card r r3"><div class="ava">📖</div><div class="ava-name">Dimitar Yanev</div><div class="ava-role">Narrative Lead</div></div>
     </div>
   </div>
 </section>
@@ -469,123 +469,97 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.setSize(window.innerWidth, window.innerHeight);
 
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 0.1, 1000);
-camera.position.set(0, 5, 15);
+const camera = new THREE.PerspectiveCamera(50, window.innerWidth/window.innerHeight, 0.1, 1000);
+camera.position.set(0, 0, 7);
 
-// ── NEW BETTER BACKGROUND: INTERACTIVE PARTICLES GRID WAVE
-const COUNT_X = 65;
-const COUNT_Z = 65;
-const NUM_PARTICLES = COUNT_X * COUNT_Z;
+// ── СИВИ КОСТИ / ЧЕРЕП НА ЖИВОТНО (Генериран нискополигонален модел)
+const animalSkull = new THREE.Group();
 
-const positions = new Float32Array(NUM_PARTICLES * 3);
-const colors = new Float32Array(NUM_PARTICLES * 3);
-
-const colorYellow = new THREE.Color('#ffe600');
-const colorDark = new THREE.Color('#332e00');
-
-let index = 0;
-for (let x = 0; x < COUNT_X; x++) {
-  for (let z = 0; z < COUNT_Z; z++) {
-    // Center the grid around (0,0,0)
-    positions[index * 3] = (x - COUNT_X / 2) * 0.75; 
-    positions[index * 3 + 1] = 0;                    
-    positions[index * 3 + 2] = (z - COUNT_Z / 2) * 0.75; 
-
-    // Gradient colors based on position
-    const mixRatio = (x / COUNT_X) * (z / COUNT_Z);
-    const c = new THREE.Color().lerpColors(colorDark, colorYellow, mixRatio);
-    colors[index * 3] = c.r;
-    colors[index * 3 + 1] = c.g;
-    colors[index * 3 + 2] = c.b;
-
-    index++;
-  }
-}
-
-const geometry = new THREE.BufferGeometry();
-geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-
-// Custom Shader Material for clean neon circular particles
-const material = new THREE.ShaderMaterial({
-  vertexColors: true,
-  transparent: true,
-  depthWrite: false,
-  blending: THREE.AdditiveBlending,
-  vertexShader: `
-    varying vec3 vColor;
-    void main() {
-      vColor = color;
-      vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
-      gl_PointSize = 10.0 * (300.0 / -mvPosition.z);
-      gl_Position = projectionMatrix * mvPosition;
-    }
-  `,
-  fragmentShader: `
-    varying vec3 vColor;
-    void main() {
-      float dist = length(gl_PointCoord - vec2(0.5));
-      if (dist > 0.5) discard;
-      float alpha = smoothstep(0.5, 0.1, dist) * 0.45;
-      gl_FragColor = vec4(vColor, alpha);
-    }
-  `
+// Черепна кост (основна кутия/форма)
+const headGeo = new THREE.CylinderGeometry(0.8, 0.4, 2.2, 7, 3);
+const boneMat = new THREE.MeshBasicMaterial({
+  color: 0x888888, // Слав сив цвят
+  wireframe: true, 
+  transparent: true, 
+  opacity: 0.3
 });
+const headMesh = new THREE.Mesh(headGeo, boneMat);
+headMesh.rotation.x = Math.PI / 2;
+animalSkull.add(headMesh);
 
-const particleSystem = new THREE.Points(geometry, material);
+// Рога / Разклонения на кости (Ляво и Дясно)
+const hornShape = new THREE.ConeGeometry(0.2, 1.8, 5);
+const leftHorn = new THREE.Mesh(hornShape, boneMat);
+leftHorn.position.set(-0.8, 0.8, -0.6);
+leftHorn.rotation.z = 1.1;
+leftHorn.rotation.x = -0.5;
+
+const rightHorn = leftHorn.clone();
+rightHorn.position.x = 0.8;
+rightHorn.rotation.z = -1.1;
+
+animalSkull.add(leftHorn);
+animalSkull.add(rightHorn);
+
+// Челюст
+const jawGeo = new THREE.BoxGeometry(0.7, 0.3, 1.2);
+const jaw = new THREE.Mesh(jawGeo, boneMat);
+jaw.position.set(0, -0.5, 0.5);
+animalSkull.add(jaw);
+
+// Позиционираме костите малко встрани от центъра за добър визуален дизайн зад текста
+animalSkull.position.set(2.5, 0, 0);
+scene.add(animalSkull);
+
+// Атмосферна мрежа от сиво-жълти прашинки за дълбочина
+const particlesCount = 300;
+const pGeometry = new THREE.BufferGeometry();
+const pPositions = new Float32Array(particlesCount * 3);
+for(let i=0; i<particlesCount*3; i+=3) {
+  pPositions[i] = (Math.random() - 0.5) * 15;
+  pPositions[i+1] = (Math.random() - 0.5) * 15;
+  pPositions[i+2] = (Math.random() - 0.5) * 15;
+}
+pGeometry.setAttribute('position', new THREE.BufferAttribute(pPositions, 3));
+const pMaterial = new THREE.PointsMaterial({color: 0xffe600, size: 0.03, transparent: true, opacity: 0.4});
+const particleSystem = new THREE.Points(pGeometry, pMaterial);
 scene.add(particleSystem);
 
-// ── MOUSE INTERACTION
+// ── ИНТЕРАКТИВНОСТ: КОСТИТЕ ГОНЯТ МИШКАТА
 const mouse = { x: 0, y: 0, targetX: 0, targetY: 0 };
 document.addEventListener('mousemove', (e) => {
+  // Нормализиране на координатите (-1 до 1)
   mouse.targetX = (e.clientX / window.innerWidth - 0.5) * 2;
   mouse.targetY = -(e.clientY / window.innerHeight - 0.5) * 2;
 });
 
-// ── RESIZE HANDLER
+// ── РЕЗИСЕ
 window.addEventListener('resize', () => {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
-// ── ANIMATION LOOP
+// ── АНИМАЦИОНЕН ЦИКЪЛ
 const clock = new THREE.Clock();
 
 function animate() {
   requestAnimationFrame(animate);
   const elapsed = clock.getElapsedTime();
 
-  // Smooth mouse interpolation
+  // Плавно приближаване (интерполация) до позицията на мишката
   mouse.x += (mouse.targetX - mouse.x) * 0.05;
   mouse.y += (mouse.targetY - mouse.y) * 0.05;
 
-  // Animate the grid waves dynamically
-  const posAttribute = geometry.attributes.position;
-  let idx = 0;
-  for (let x = 0; x < COUNT_X; x++) {
-    for (let z = 0; z < COUNT_Z; z++) {
-      // Calculate wave height using sine/cosine combinations
-      const xFactor = Math.sin(x * 0.2 + elapsed * 1.2);
-      const zFactor = Math.cos(z * 0.2 + elapsed * 1.2);
-      
-      // Interactive mouse distortion based on distance
-      const posX = posAttribute.array[idx * 3];
-      const posZ = posAttribute.array[idx * 3 + 2];
-      const distToMouse = Math.sqrt(Math.pow(posX - mouse.x * 10, 2) + Math.pow(posZ + mouse.y * 10, 2));
-      const mouseInfluence = Math.max(0, (10 - distToMouse) * 0.12);
+  // Костите "гонят" мишката чрез промяна на ротацията си по X и Y
+  animalSkull.rotation.y = mouse.x * 0.8 + Math.sin(elapsed * 0.5) * 0.1; // леко дишане в добавка
+  animalSkull.rotation.x = -mouse.y * 0.8;
 
-      posAttribute.array[idx * 3 + 1] = (xFactor * zFactor) * 0.8 + mouseInfluence;
-      idx++;
-    }
-  }
-  posAttribute.needsUpdate = true;
+  // Леко мърдане на целия обект нагоре-надолу
+  animalSkull.position.y = Math.sin(elapsed * 0.8) * 0.2;
 
-  // Subtle global environment adjustments via camera
+  // Движение на прашинките на заден план
   particleSystem.rotation.y = elapsed * 0.02;
-  camera.position.x += (mouse.x * 4 - camera.position.x) * 0.03;
-  camera.position.y += ((5 + mouse.y * 3) - camera.position.y) * 0.03;
-  camera.lookAt(0, -1, 0);
 
   renderer.render(scene, camera);
 }
