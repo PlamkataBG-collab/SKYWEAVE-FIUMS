@@ -1,527 +1,590 @@
-
+<!DOCTYPE html>
 <html lang="bg">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Balkan Byte Games Studio</title>
-    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    
-    <style>
-        /* --- ROCKSTAR STYLE VARIABLE & RESET --- */
-        :root {
-            --bg-color: #000000;
-            --card-bg: #0a0a0a;
-            --accent-color: #fca311; /* Топло Rockstar жълто */
-            --text-main: #ffffff;
-            --text-muted: #707070;
-            --border-color: #1a1a1a;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skyweave Films — Въздушна кинематография</title>
+<meta name="description" content="Skyweave Films — професионална въздушна видео и фото продукция с дронове за недвижими имоти, сватби, реклама и събития в България.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sky-deep:#0a1a2e;
+    --sky-mid:#1e3a5f;
+    --horizon-gold:#d9a441;
+    --cloud:#f2efe9;
+    --steel:#7c8b99;
+    --signal-red:#c4432e;
+    --line: rgba(242,239,233,0.14);
+    --radius: 3px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background: var(--cloud);
+    color: var(--sky-deep);
+    font-family:'Inter', sans-serif;
+    line-height:1.55;
+    overflow-x:hidden;
+  }
+  h1,h2,h3{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    letter-spacing:-0.01em;
+    color: var(--sky-deep);
+  }
+  .mono{
+    font-family:'JetBrains Mono', monospace;
+    letter-spacing:0.02em;
+  }
+  a{color:inherit;}
+  img{max-width:100%; display:block;}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 32px;}
+  @media (max-width:640px){ .wrap{padding:0 20px;} }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Roboto', sans-serif;
-            scroll-behavior: smooth;
-        }
+  /* ---------- NAV ---------- */
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    background: rgba(10,26,46,0.92);
+    backdrop-filter: blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  nav{
+    display:flex; align-items:center; justify-content:space-between;
+    max-width:1180px; margin:0 auto; padding:18px 32px;
+  }
+  .logo{
+    color:var(--cloud); font-family:'Fraunces', serif; font-weight:600;
+    font-size:1.25rem; letter-spacing:0.01em; display:flex; align-items:center; gap:8px;
+  }
+  .logo .dot{color:var(--horizon-gold);}
+  .navlinks{display:flex; gap:32px; list-style:none;}
+  .navlinks a{
+    color:var(--cloud); text-decoration:none; font-size:0.92rem; font-weight:500;
+    opacity:0.85; transition:opacity .2s;
+  }
+  .navlinks a:hover{opacity:1;}
+  .nav-cta{
+    background:var(--horizon-gold); color:var(--sky-deep); padding:10px 20px;
+    border-radius:var(--radius); font-weight:600; font-size:0.88rem; text-decoration:none;
+    transition:background .2s;
+  }
+  .nav-cta:hover{background:#c4923a;}
+  .burger{display:none; flex-direction:column; gap:5px; cursor:pointer; background:none; border:none; padding:6px;}
+  .burger span{width:22px; height:2px; background:var(--cloud);}
+  @media (max-width:860px){
+    .navlinks{
+      position:fixed; top:60px; left:0; right:0; background:var(--sky-deep);
+      flex-direction:column; padding:24px 32px; gap:18px; border-bottom:1px solid var(--line);
+      transform:translateY(-150%); transition:transform .3s ease; opacity:0;
+    }
+    .navlinks.open{transform:translateY(0); opacity:1;}
+    .burger{display:flex;}
+    .nav-cta{display:none;}
+  }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            overflow-x: hidden;
-        }
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    background:
+      linear-gradient(180deg, rgba(10,26,46,0.88) 0%, rgba(10,26,46,0.82) 55%, rgba(30,58,95,0.9) 100%),
+      url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStw9Yv7rctVeMPDWdm58FBgHAzNfoNdlzKHdn1Nn1vz962IbYqVUrHn3Ap&s=10') center center / cover no-repeat;
+    padding:150px 0 90px;
+    overflow:hidden;
+  }
+  .hero-grid{
+    max-width:1180px; margin:0 auto; padding:0 32px; position:relative; z-index:2;
+  }
 
-        /* Заглавия в стил Rockstar (Масивни и Големи) */
-        h1, h2, h3, .logo {
-            font-family: 'Barlow Condensed', sans-serif;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
+  .eyebrow{
+    color:var(--horizon-gold); font-size:0.8rem; font-weight:500; letter-spacing:0.14em;
+    text-transform:uppercase; margin-bottom:18px; display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{content:''; width:24px; height:1px; background:var(--horizon-gold);}
+  .hero h1{
+    color:var(--cloud); font-size:clamp(2.3rem, 5vw, 3.6rem); line-height:1.06; margin-bottom:22px;
+  }
+  .hero h1 em{color:var(--horizon-gold); font-style:normal;}
+  .hero p.lead{
+    color:var(--steel); font-size:1.08rem; max-width:480px; margin-bottom:34px;
+  }
+  .hero-ctas{display:flex; gap:16px; flex-wrap:wrap;}
+  .btn-primary{
+    background:var(--horizon-gold); color:var(--sky-deep); padding:15px 28px;
+    border-radius:var(--radius); font-weight:600; text-decoration:none; font-size:0.95rem;
+    transition:transform .2s, background .2s; display:inline-block;
+  }
+  .btn-primary:hover{background:#c4923a; transform:translateY(-2px);}
+  .btn-ghost{
+    border:1px solid var(--line); color:var(--cloud); padding:14px 26px;
+    border-radius:var(--radius); font-weight:500; text-decoration:none; font-size:0.95rem;
+    transition:border-color .2s;
+  }
+  .btn-ghost:hover{border-color:var(--horizon-gold);}
 
-        a {
-            text-decoration: none;
-            color: inherit;
-            transition: all 0.2s ease-in-out;
-        }
+  /* HUD visual */
+  .hud-frame{
+    position:relative; aspect-ratio:4/3.2; border:1px solid var(--line); border-radius:4px;
+  }
+  .hud-frame::before, .hud-frame::after,
+  .hud-frame .corner-tl, .hud-frame .corner-br{
+    content:''; position:absolute; width:18px; height:18px; border-color:var(--horizon-gold);
+  }
+  .corner-tl{top:-1px; left:-1px; border-top:2px solid var(--horizon-gold); border-left:2px solid var(--horizon-gold);}
+  .corner-br{bottom:-1px; right:-1px; border-bottom:2px solid var(--horizon-gold); border-right:2px solid var(--horizon-gold);}
+  .hud-readout{
+    position:absolute; color:var(--cloud); font-size:0.72rem; opacity:0.85;
+  }
+  .hud-readout.tl{top:14px; left:16px;}
+  .hud-readout.tr{top:14px; right:16px; text-align:right;}
+  .hud-readout.bl{bottom:14px; left:16px;}
+  .hud-readout.br{bottom:14px; right:16px; text-align:right;}
+  .hud-readout .lbl{color:var(--horizon-gold); display:block; font-size:0.62rem; letter-spacing:0.1em;}
 
-        /* --- НАВИГАЦИЯ (ЧИСТ МИНИМАЛИЗЪМ) --- */
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 25px 5%;
-            background-color: rgba(0, 0, 0, 0.9);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            border-bottom: 1px solid var(--border-color);
-            backdrop-filter: blur(10px);
-        }
+  /* ---------- TRUST STRIP ---------- */
+  .trust{
+    background:var(--sky-deep); border-top:1px solid var(--line); padding:26px 0;
+  }
+  .trust .wrap{
+    display:flex; flex-wrap:wrap; justify-content:space-between; gap:20px;
+  }
+  .trust-item{
+    color:var(--steel); font-size:0.82rem; display:flex; align-items:center; gap:10px;
+  }
+  .trust-item .mono{color:var(--horizon-gold); font-size:0.78rem;}
 
-        .logo {
-            font-size: 28px;
-            font-weight: 800;
-            color: #fff;
-            letter-spacing: 0px;
-        }
+  /* ---------- SECTIONS ---------- */
+  section{padding:96px 0;}
+  .section-head{max-width:620px; margin-bottom:56px;}
+  .section-eyebrow{
+    color:var(--signal-red); font-size:0.78rem; font-weight:600; letter-spacing:0.12em;
+    text-transform:uppercase; margin-bottom:14px;
+  }
+  .section-head h2{font-size:clamp(1.7rem, 3.4vw, 2.4rem); margin-bottom:16px;}
+  .section-head p{color:var(--sky-mid); font-size:1.02rem; opacity:0.85;}
 
-        .logo span {
-            color: var(--accent-color);
-        }
+  /* Services */
+  .services-grid{display:grid; grid-template-columns:repeat(3, 1fr); gap:1px; background:var(--line); border:1px solid var(--line);}
+  @media (max-width:860px){ .services-grid{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:600px){ .services-grid{grid-template-columns:1fr;} }
+  .service-card{background:var(--cloud); padding:34px 28px;}
+  .service-card .num{font-family:'JetBrains Mono', monospace; color:var(--horizon-gold); font-size:0.78rem; margin-bottom:16px; display:block;}
+  .service-card h3{font-size:1.15rem; margin-bottom:10px;}
+  .service-card p{color:var(--sky-mid); font-size:0.92rem; opacity:0.85;}
 
-        nav ul {
-            display: flex;
-            list-style: none;
-            gap: 40px;
-        }
+  /* Fleet */
+  .fleet{background:var(--sky-deep);}
+  .fleet .section-head h2, .fleet .section-eyebrow{color:var(--cloud);}
+  .fleet .section-eyebrow{color:var(--horizon-gold);}
+  .fleet .section-head p{color:var(--steel);}
+  .fleet-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:24px;}
+  @media (max-width:900px){ .fleet-grid{grid-template-columns:1fr;} }
+  .fleet-card{
+    border:1px solid var(--line); border-radius:4px; padding:28px; background:rgba(242,239,233,0.03);
+    position:relative;
+  }
+  .fleet-status{
+    position:absolute; top:24px; right:24px; font-size:0.66rem; padding:4px 9px; border-radius:20px;
+    text-transform:uppercase; letter-spacing:0.06em; font-weight:600;
+  }
+  .status-active{background:rgba(74,163,65,0.15); color:#7fd67a;}
+  .status-dev{background:rgba(217,164,65,0.15); color:var(--horizon-gold);}
+  .fleet-card h3{color:var(--cloud); font-size:1.1rem; margin-bottom:6px; padding-right:70px;}
+  .fleet-card .tag{color:var(--horizon-gold); font-size:0.76rem; margin-bottom:20px; display:block;}
+  .spec-row{
+    display:flex; justify-content:space-between; padding:9px 0; border-top:1px solid var(--line);
+    font-size:0.82rem;
+  }
+  .spec-row:first-of-type{border-top:none;}
+  .spec-row .k{color:var(--steel);}
+  .spec-row .v{color:var(--cloud); font-family:'JetBrains Mono', monospace; font-size:0.78rem;}
 
-        nav ul li a {
-            font-family: 'Barlow Condensed', sans-serif;
-            font-size: 20px;
-            font-weight: 700;
-            color: #fff;
-            letter-spacing: 1px;
-        }
+  /* Process */
+  .process-list{display:flex; flex-direction:column;}
+  .process-step{
+    display:grid; grid-template-columns:70px 1fr; gap:24px; padding:28px 0;
+    border-top:1px solid rgba(10,26,46,0.1);
+  }
+  .process-step:last-child{border-bottom:1px solid rgba(10,26,46,0.1);}
+  .process-step .step-num{font-family:'JetBrains Mono', monospace; color:var(--horizon-gold); font-size:0.95rem; padding-top:4px;}
+  .process-step h3{font-size:1.15rem; margin-bottom:8px;}
+  .process-step p{color:var(--sky-mid); opacity:0.85; font-size:0.94rem; max-width:560px;}
 
-        nav ul li a:hover {
-            color: var(--accent-color);
-        }
+  /* Team */
+  .team-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:24px;}
+  @media (max-width:700px){ .team-grid{grid-template-columns:1fr;} }
+  .team-card{
+    border:1px solid rgba(10,26,46,0.12); border-radius:4px; padding:30px; display:flex; gap:20px; align-items:flex-start;
+  }
+  .avatar{
+    width:56px; height:56px; border-radius:50%; flex-shrink:0;
+    background:linear-gradient(135deg, var(--sky-mid), var(--sky-deep));
+    display:flex; align-items:center; justify-content:center; color:var(--horizon-gold);
+    font-family:'Fraunces', serif; font-weight:600; font-size:1.2rem;
+  }
+  .team-card h3{font-size:1.05rem; margin-bottom:4px;}
+  .team-card .role{color:var(--signal-red); font-size:0.8rem; font-weight:600; margin-bottom:10px; display:block;}
+  .team-card p{font-size:0.9rem; color:var(--sky-mid); opacity:0.85;}
 
-        .nav-cta {
-            border: 2px solid var(--accent-color);
-            padding: 5px 15px;
-            color: var(--accent-color) !important;
-        }
+  /* Careers */
+  .careers{
+    background:var(--sky-mid); border-radius:6px; padding:56px 48px; display:flex;
+    justify-content:space-between; align-items:center; gap:32px; flex-wrap:wrap;
+  }
+  .careers h2{color:var(--cloud); font-size:1.7rem; margin-bottom:12px; max-width:440px;}
+  .careers p{color:var(--steel); max-width:420px; font-size:0.95rem;}
+  .careers-cta{flex-shrink:0;}
 
-        .nav-cta:hover {
-            background: var(--accent-color);
-            color: #000 !important;
-        }
+  /* Contact / footer */
+  .contact{background:var(--sky-deep); padding:90px 0 40px;}
+  .contact .section-head h2, .contact .section-eyebrow{color:var(--cloud);}
+  .contact .section-eyebrow{color:var(--horizon-gold);}
+  .contact .section-head p{color:var(--steel);}
+  .contact-grid{display:grid; grid-template-columns:1.2fr 0.8fr; gap:48px;}
+  @media (max-width:800px){ .contact-grid{grid-template-columns:1fr;} }
+  .contact-card{
+    border:1px solid var(--line); border-radius:4px; padding:36px; background:rgba(242,239,233,0.03);
+  }
+  .contact-card p{color:var(--steel); margin-bottom:24px; font-size:0.95rem;}
+  .contact-detail{display:flex; justify-content:space-between; padding:14px 0; border-top:1px solid var(--line); font-size:0.88rem;}
+  .contact-detail:first-of-type{border-top:none;}
+  .contact-detail .k{color:var(--steel);}
+  .contact-detail .v{color:var(--cloud); font-family:'JetBrains Mono', monospace; font-size:0.82rem;}
+  footer{
+    border-top:1px solid var(--line); margin-top:60px; padding-top:28px;
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px;
+    color:var(--steel); font-size:0.8rem;
+  }
 
-        /* --- ГЛАВЕН БАНЕР (HERO SECTION) --- */
-        .hero {
-            height: 85vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            position: relative;
-            background: radial-gradient(circle, rgba(20,20,20,1) 0%, rgba(0,0,0,1) 100%);
-            padding: 20px;
-            border-bottom: 1px solid var(--border-color);
-        }
+  .reveal{opacity:0; transform:translateX(70px); transition:opacity .7s cubic-bezier(.16,.8,.3,1), transform .7s cubic-bezier(.16,.8,.3,1);}
+  .reveal.in{opacity:1; transform:translateX(0);}
 
-        .hero img {
-            max-width: 320px;
-            margin-bottom: 30px;
-            filter: drop-shadow(0px 0px 20px rgba(252, 163, 17, 0.2));
-        }
+  @media (prefers-reduced-motion: reduce){
+    .reveal{transition:none; opacity:1; transform:none;}
+    html{scroll-behavior:auto;}
+  }
 
-        .hero h1 {
-            font-size: 5rem;
-            font-weight: 800;
-            line-height: 1;
-            margin-bottom: 10px;
-        }
+  /* ---------- PRELOADER ---------- */
+  #preloader{
+    position:fixed; inset:0; z-index:9999; background:var(--sky-deep);
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:18px;
+    transition:opacity .5s ease, visibility .5s ease;
+  }
+  #preloader.hide{opacity:0; visibility:hidden; pointer-events:none;}
+  .pl-logo{
+    color:var(--cloud); font-family:'Fraunces', serif; font-weight:600; font-size:1.3rem; letter-spacing:0.02em;
+  }
+  .pl-logo span{color:var(--horizon-gold);}
+  .pl-bar{
+    width:180px; height:2px; background:rgba(242,239,233,0.15); overflow:hidden; position:relative; border-radius:2px;
+  }
+  .pl-bar::after{
+    content:''; position:absolute; top:0; left:0; height:100%; width:40%;
+    background:var(--horizon-gold); animation:pl-slide 1.1s ease-in-out infinite;
+  }
+  .pl-pct{color:var(--steel); font-family:'JetBrains Mono', monospace; font-size:0.72rem; letter-spacing:0.08em;}
+  @keyframes pl-slide{
+    0%{left:-40%;}
+    100%{left:100%;}
+  }
 
-        .hero p {
-            font-size: 1.2rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 4px;
-        }
+  /* ---------- BUTTON CLICK RIPPLE ---------- */
+  .btn-primary, .btn-ghost, .nav-cta{
+    position:relative; overflow:hidden;
+  }
+  .ripple{
+    position:absolute; border-radius:50%; transform:scale(0);
+    background:rgba(255,255,255,0.45); pointer-events:none;
+    animation:ripple-anim .6s ease-out forwards;
+  }
+  @keyframes ripple-anim{
+    to{ transform:scale(2.6); opacity:0; }
+  }
 
-        /* --- СЕКЦИИ (ОБЩИ) --- */
-        section {
-            padding: 120px 5%;
-        }
-
-        .section-title {
-            font-size: 3.5rem;
-            font-weight: 800;
-            margin-bottom: 50px;
-            border-left: 6px solid var(--accent-color);
-            padding-left: 20px;
-            line-height: 1;
-        }
-
-        /* --- СЕКЦИЯ: ИГРИ (NEWEST GAME BLOCK) --- */
-        #games {
-            background: #050505;
-        }
-
-        .game-showcase {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        .game-img-wrapper {
-            overflow: hidden;
-            position: relative;
-        }
-
-        .game-img-wrapper img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-
-        .game-showcase:hover .game-img-wrapper img {
-            transform: scale(1.05);
-        }
-
-        .game-info {
-            padding: 60px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .game-info .tag {
-            color: var(--accent-color);
-            text-transform: uppercase;
-            font-weight: 700;
-            font-size: 0.9rem;
-            letter-spacing: 2px;
-            margin-bottom: 10px;
-        }
-
-        .game-info h2 {
-            font-size: 4rem;
-            margin-bottom: 20px;
-            line-height: 1;
-        }
-
-        .game-info p {
-            color: #a0a0a0;
-            margin-bottom: 30px;
-            font-size: 1.1rem;
-            line-height: 1.6;
-        }
-
-        .btn-play {
-            align-self: flex-start;
-            background: #fff;
-            color: #000;
-            font-family: 'Barlow Condensed', sans-serif;
-            font-size: 1.3rem;
-            font-weight: 700;
-            padding: 12px 35px;
-            text-transform: uppercase;
-            border: 2px solid #fff;
-        }
-
-        .btn-play:hover {
-            background: transparent;
-            color: #fff;
-        }
-
-        /* --- СЕКЦИЯ: ЗА НАС (ABOUT) --- */
-        #about {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .about-content {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 60px;
-        }
-
-        .about-content h3 {
-            font-size: 2.5rem;
-            color: var(--accent-color);
-            line-height: 1.1;
-        }
-
-        .about-text p {
-            font-size: 1.2rem;
-            color: #c0c0c0;
-            margin-bottom: 25px;
-            line-height: 1.7;
-        }
-
-        /* --- СЕКЦИЯ: ЕКИП (CHARACTER DOSSIERS) --- */
-        #team {
-            background-color: #050505;
-        }
-
-        .team-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
-            gap: 30px;
-        }
-
-        .team-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            display: flex;
-            height: 320px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .team-card:hover {
-            border-color: var(--accent-color);
-        }
-
-        .member-details {
-            padding: 30px;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .member-details h2 {
-            font-size: 2.2rem;
-            line-height: 1;
-            margin-bottom: 5px;
-        }
-
-        .member-details h3 {
-            font-size: 1.1rem;
-            color: var(--accent-color);
-            letter-spacing: 1px;
-            margin-bottom: 15px;
-        }
-
-        .member-meta {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-        }
-
-        .member-meta span {
-            color: #fff;
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        .team-card img {
-            width: 200px;
-            height: 100%;
-            object-fit: cover;
-            border-left: 1px solid var(--border-color);
-            background: #111;
-        }
-
-        /* --- СЕКЦИЯ: КОНТАКТИ --- */
-        #contact {
-            text-align: center;
-            background: #000;
-            border-top: 1px solid var(--border-color);
-        }
-
-        .contact-wrap {
-            max-width: 700px;
-            margin: 0 auto;
-        }
-
-        #contact p.desc {
-            font-size: 1.2rem;
-            color: var(--text-muted);
-            margin-bottom: 40px;
-        }
-
-        .email-link {
-            font-family: 'Barlow Condensed', sans-serif;
-            font-size: 3rem;
-            font-weight: 800;
-            color: #fff;
-            display: inline-block;
-            margin-bottom: 40px;
-        }
-
-        .email-link:hover {
-            color: var(--accent-color);
-        }
-
-        .social-row {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-        }
-
-        .social-btn {
-            border: 1px solid var(--border-color);
-            padding: 15px 40px;
-            font-weight: 700;
-            text-transform: uppercase;
-            font-family: 'Barlow Condensed', sans-serif;
-            font-size: 1.2rem;
-            letter-spacing: 1px;
-        }
-
-        .social-btn:hover {
-            background: #fff;
-            color: #000;
-            border-color: #fff;
-        }
-
-        /* --- ФУТЪР --- */
-        footer {
-            padding: 40px 5%;
-            text-align: center;
-            border-top: 1px solid var(--border-color);
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* --- МЕГА АДАПТИВНОСТ --- */
-        @media (max-width: 992px) {
-            .game-showcase {
-                grid-template-columns: 1fr;
-            }
-            .about-content {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            nav {
-                flex-direction: column;
-                gap: 20px;
-            }
-            nav ul {
-                gap: 20px;
-            }
-            .hero h1 {
-                font-size: 3.2rem;
-            }
-            .section-title {
-                font-size: 2.5rem;
-            }
-            .game-info {
-                padding: 30px;
-            }
-            .game-info h2 {
-                font-size: 2.8rem;
-            }
-            .team-card {
-                flex-direction: column-reverse;
-                height: auto;
-            }
-            .team-card img {
-                width: 100%;
-                height: 250px;
-                border-left: none;
-                border-bottom: 1px solid var(--border-color);
-            }
-            .email-link {
-                font-size: 1.8rem;
-            }
-            .team-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+  /* ---------- BLACK CARDS ---------- */
+  .service-card{
+    background:#111417; border-color:#111417;
+  }
+  .service-card h3{color:var(--cloud);}
+  .service-card p{color:var(--steel);}
+  .services-grid{background:#111417; border-color:#111417;}
+  .team-card{
+    background:#111417; border-color:#111417;
+  }
+  .team-card h3{color:var(--cloud);}
+  .team-card p{color:var(--steel);}
+</style>
 </head>
 <body>
 
-    <nav>
-        <a href="#" class="logo">Balkan Byte Games <span>Studio</span></a>
-        <ul>
-            <li><a href="#games">Games</a></li>
-            <li><a href="#about">Studio</a></li>
-            <li><a href="#team">Team</a></li>
-            <li><a href="#contact" class="nav-cta">Contact</a></li>
-        </ul>
-    </nav>
+<div id="preloader">
+  <div class="pl-logo">SKYWEAVE<span>·</span>FILMS</div>
+  <div class="pl-bar"></div>
+  <div class="pl-pct mono" id="pl-pct">0%</div>
+</div>
 
-    <div class="hero">
-        <img src="https://cdn.discordapp.com/attachments/1477240493166428161/1520436751687094282/9f7kb5z.png?ex=6a413091&is=6a3fdf11&hm=408d3d4b8caaee6f97859702dc2ef6c7555b0dde9766dfef02f83518037f65de&animated=true" alt="Balkan Byte Logo">
-        <h1>BALKAN BYTE</h1>
-        <p>Next-Gen Interactive Entertainment</p>
+<header>
+  <nav>
+    <a href="#top" class="logo">SKYWEAVE<span class="dot">·</span>FILMS</a>
+    <ul class="navlinks" id="navlinks">
+      <li><a href="#services">Услуги</a></li>
+      <li><a href="#fleet">Дронове</a></li>
+      <li><a href="#process">Процес</a></li>
+      <li><a href="#team">Екип</a></li>
+      <li><a href="#careers">Кариери</a></li>
+      <li><a href="#contact">Контакт</a></li>
+    </ul>
+    <a href="#contact" class="nav-cta">Заяви оферта</a>
+    <button class="burger" id="burger" aria-label="Меню"><span></span><span></span><span></span></button>
+  </nav>
+</header>
+
+<section class="hero" id="top">
+  <div class="hero-grid">
+    <div>
+      <div class="eyebrow">Въздушна кинематография · България</div>
+      <h1>Кадри, които се<br>снимат само <em>отгоре</em>.</h1>
+      <p class="lead">Skyweave Films е екип от лицензирани пилоти, който заснема недвижими имоти, сватби, реклами и събития от въздуха — с прецизност, застраховано оборудване и монтаж, готов за екрана.</p>
+      <div class="hero-ctas">
+        <a href="#contact" class="btn-primary">Заяви консултация</a>
+        <a href="#fleet" class="btn-ghost">Виж оборудването</a>
+      </div>
     </div>
+  </div>
+</section>
 
-    <section id="games">
-        <h1 class="section-title">Featured Game</h1>
-        
-        <div class="game-showcase">
-            <div class="game-img-wrapper">
-                <img src="https://cdn.discordapp.com/attachments/1477240493166428161/1520426323678466198/39p6jhd.png?ex=6a4126db&is=6a3fd55b&hm=9afc8106ab7818e2b9f2218ee607997d9c1a75567fcf243d56942e7c0093c220&animated=true" alt="Caravan Life">
-            </div>
-            <div class="game-info">
-                <span class="tag">Out Now</span>
-                <h2>CARAVAN LIFE</h2>
-                <p>Immerse yourself in the ultimate simulation experience. Build your legacy, explore massive open environments, and manage your journey in our flagship title. Built with attention to performance and deep engagement.</p>
-                <a href="#" class="btn-play">Official Site</a>
-            </div>
+<div class="trust">
+  <div class="wrap">
+    <div class="trust-item"><span class="mono">01</span> Лицензирани пилоти по регламент на ГВА</div>
+    <div class="trust-item"><span class="mono">02</span> Застраховано оборудване и полети</div>
+    <div class="trust-item"><span class="mono">03</span> Индивидуален подход към всеки проект</div>
+    <div class="trust-item"><span class="mono">04</span> Доставка на готов монтаж</div>
+  </div>
+</div>
+
+<section id="services">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-eyebrow">Услуги</div>
+      <h2>Един екип, няколко гледни точки</h2>
+      <p>Работим с малки и средни бизнеси, агенции и частни клиенти — планираме полета, заснемаме и предаваме готов за публикуване материал.</p>
+    </div>
+    <div class="services-grid reveal">
+      <div class="service-card">
+        <span class="num">01</span>
+        <h3>Недвижими имоти</h3>
+        <p>Въздушни снимки и видео обиколки на имоти, парцели и строителни обекти — материал, който продава по-бързо от статични снимки.</p>
+      </div>
+      <div class="service-card">
+        <span class="num">02</span>
+        <h3>Сватби и събития</h3>
+        <p>Дискретно заснемане на ключови моменти отвисоко, без да пречим на церемонията — включено в общия монтаж на деня.</p>
+      </div>
+      <div class="service-card">
+        <span class="num">03</span>
+        <h3>Реклама и бранд съдържание</h3>
+        <p>Кинематографични кадри за реклами, продуктови видеа и социални мрежи, съобразени с визията на марката.</p>
+      </div>
+      <div class="service-card">
+        <span class="num">04</span>
+        <h3>FPV и екшън заснемане</h3>
+        <p>Динамични, бързи преходи през тесни пространства и покрай препятствия — за спорт, екшън и атмосферни видеа.</p>
+      </div>
+      <div class="service-card">
+        <span class="num">05</span>
+        <h3>Инспекции и мапинг</h3>
+        <p>Прегледи на покриви, фасади, соларни панели и терени — безопасно и без нужда от скеле или катерене.</p>
+      </div>
+      <div class="service-card">
+        <span class="num">06</span>
+        <h3>Персонализирани проекти</h3>
+        <p>Нестандартна задача? Разкажете ни какво искате да заснемете — планираме полета според вашите нужди.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="fleet" id="fleet">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-eyebrow">Оборудване</div>
+      <h2>Нашите дронове</h2>
+      <p>Всеки полет минава през предварителна проверка на батерии, GPS сигнал и метеорологични условия.</p>
+    </div>
+    <div class="fleet-grid reveal">
+      <div class="fleet-card">
+        <span class="fleet-status status-active">Активен</span>
+        <h3>DJI Phantom 4</h3>
+        <span class="tag mono">СНИМКИ · ВИДЕО · ИНСПЕКЦИИ</span>
+        <div class="spec-row"><span class="k">Камера</span><span class="v">1" CMOS, 4K/60fps</span></div>
+        <div class="spec-row"><span class="k">Полетно време</span><span class="v">~28 МИН</span></div>
+        <div class="spec-row"><span class="k">Обхват</span><span class="v">ДО 5 КМ</span></div>
+        <div class="spec-row"><span class="k">Приложение</span><span class="v"> РЕКЛАМИ</span></div>
+      </div>
+      <div class="fleet-card">
+        <span class="fleet-status status-active">Активен</span>
+        <h3>FPV Long Range Drone</h3>
+        <span class="tag mono">ЕКШЪН · ДИНАМИЧНИ КАДРИ</span>
+        <div class="spec-row"><span class="k">Стил</span><span class="v">РЪЧНО ПИЛОТИРАНЕ</span></div>
+        <div class="spec-row"><span class="k">Скорост</span><span class="v">ВИСОКА</span></div>
+        <div class="spec-row"><span class="k">Сила</span><span class="v">ПРЕЛИТАНИЯ / ПРОЛЕТИ БЛИЗО ДО ОБЕКТИ</span></div>
+        <div class="spec-row"><span class="k">Приложение</span><span class="v">РЕКЛАМА / СПОРТ</span></div>
+      </div>
+      <div class="fleet-card">
+        <span class="fleet-status status-dev">В разработка</span>
+        <h3>Custom 3×4K Drone</h3>
+        <span class="tag mono">СОБСТВЕНА РАЗРАБОТКА</span>
+        <div class="spec-row"><span class="k">Камери</span><span class="v">3× 4K, СИНХРОННИ</span></div>
+        <div class="spec-row"><span class="k">Цел</span><span class="v">МУЛТИ-ЪГЪЛОВО ЗАСНЕМАНЕ</span></div>
+        <div class="spec-row"><span class="k">Статус</span><span class="v">ТЕСТВАНЕ НА ПРОТОТИП</span></div>
+        <div class="spec-row"><span class="k">Очакван старт</span><span class="v">СКОРО</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="process">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-eyebrow">Как работим</div>
+      <h2>От запитване до готов монтаж</h2>
+      <p>Прозрачен процес в четири стъпки — знаете какво се случва на всеки етап.</p>
+    </div>
+    <div class="process-list reveal">
+      <div class="process-step">
+        <div class="step-num mono">01</div>
+        <div><h3>Консултация</h3><p>Обсъждаме целта на заснемането, локацията и желания стил — по имейл или на място.</p></div>
+      </div>
+      <div class="process-step">
+        <div class="step-num mono">02</div>
+        <div><h3>Планиране на полета</h3><p>Проверяваме разрешителни, зони за полети и метеорологични условия, за да гарантираме безопасно и законно заснемане.</p></div>
+      </div>
+      <div class="process-step">
+        <div class="step-num mono">03</div>
+        <div><h3>Заснемане</h3><p>Пилотираме с подходящия дрон за задачата — от статични обиколки до динамични FPV преходи.</p></div>
+      </div>
+      <div class="process-step">
+        <div class="step-num mono">04</div>
+        <div><h3>Монтаж и доставка</h3><p>Обработваме материала и го предаваме в готов за публикуване формат — за уеб, социални мрежи или печат.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="team">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-eyebrow">Екип</div>
+      <h2>Нашите пилоти</h2>
+      <p>Малък екип, който познава оборудването си отлично и подхожда лично към всеки проект.</p>
+    </div>
+    <div class="team-grid reveal">
+      <div class="team-card">
+        <div class="avatar">PN</div>
+        <div>
+          <h3>Пламен Нейчев</h3>
+          <span class="role">Пилот и оператор на дрон</span>
+          <p>Отговаря за планирането на полети и заснемане на въздушно видео и снимки.</p>
         </div>
-    </section>
-
-    <section id="about">
-        <h1 class="section-title">The Studio</h1>
-        <div class="about-content">
-            <h3>Meticulous craft.<br>Unforgettable stories.</h3>
-            <div class="about-text">
-                <p>We are a passionate game development studio dedicated to creating fun, innovative, and high-quality games for players around the world. Our team combines creativity, technology, and storytelling to build unforgettable gaming experiences.</p>
-                <p>From mobile and PC games to console and online multiplayer projects, we focus on delivering engaging gameplay, stunning visuals, and smooth performance. Every project is developed with attention to detail and a commitment to excellence.</p>
-            </div>
+      </div>
+      <div class="team-card">
+        <div class="avatar">DC</div>
+        <div>
+          <h3>Даниел Цанков</h3>
+          <span class="role">Пилот и оператор на дрон</span>
+          <p>Специализира в FPV заснемане и динамични кадри за реклама и събития.</p>
         </div>
-    </section>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <section id="team">
-        <h1 class="section-title">Leaders</h1>
-        
-        <div class="team-grid">
-            <div class="team-card">
-                <div class="member-details">
-                    <div>
-                        <h2>PLAMEN NEYCHEV</h2>
-                        <h3>CEO / Chief Programmer</h3>
-                    </div>
-                    <div class="member-meta">
-                        <span><strong>Discord:</strong> plamkatabg_top-│𝗽𝗹𝗮𝗺𝗸𝗮𝘁𝗮 ツ</span>
-                        <span><strong>Contact:</strong> plamen_neychev_bg@abv.bg</span>
-                    </div>
-                </div>
-                <img src="https://cdn.discordapp.com/avatars/1284523435309142027/6eea63b7e02ec774b2bfca07ee09f155.webp?size=1024" alt="Plamen">
-            </div>
+<section id="careers">
+  <div class="wrap">
+    <div class="careers reveal">
+      <div>
+        <h2>Търсим нови пилоти</h2>
+        <p>Ако имаш опит с дронове и искаш да се присъединиш към малък, но амбициозен екип — пиши ни.</p>
+      </div>
+      <div class="careers-cta">
+        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=balkanbyte.studio@gmail.com&su=Кандидатура за пилот в Skyweave Films" target="_blank" class="btn-primary">Кандидатствай за пилот</a>
+      </div>
+    </div>
+  </div>
+</section>
 
-            <div class="team-card">
-                <div class="member-details">
-                    <div>
-                        <h2>DANIEL TSANKOV</h2>
-                        <h3>CEO / Marketing & Infrastructure</h3>
-                    </div>
-                    <div class="member-meta">
-                        <span><strong>Discord:</strong> dankata_94240-Dankata</span>
-                        <span><strong>Phone:</strong> +359 88 296 5409</span>
-                        <span><strong>Contact:</strong> danieltsankov5@gmail.com</span>
-                    </div>
-                </div>
-                <img src="https://cdn.discordapp.com/avatars/1473380944273608747/4b5ce3ebc454aed8dad968cebb8c24be.webp?size=1024" alt="Daniel">
-            </div>
-        </div>
-    </section>
-
-    <section id="contact">
-        <div class="contact-wrap">
-            <h1 class="section-title" style="border: none; padding: 0;">Contact Studio</h1>
-            <p class="desc">For partnerships, press relations, job applications or community inquiries.</p>
-            
-            <a href="mailto:balkanbyte.studio@gmail.com" class="email-link">balkanbyte.studio@gmail.com</a>
-            
-            <div class="social-row">
-                <a href="https://discord.gg/Js8BRrmA" class="social-btn" target="_blank">Discord</a>
-                <a href="https://www.tiktok.com/@caravana_life263" class="social-btn" target="_blank">TikTok</a>
-            </div>
-        </div>
-    </section>
-
+<section class="contact" id="contact">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-eyebrow">Контакт</div>
+      <h2>Готови за полет?</h2>
+      <p>Разкажете ни за проекта си — ще се свържем с вас с оферта и предложен срок за заснемане.</p>
+    </div>
+    <div class="contact-grid reveal">
+      <div class="contact-card">
+        <p>Пишете ни директно през имейл и опишете накратко какво искате да заснемете — локация, дата и цел на видеото.</p>
+        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=balkanbyte.studio@gmail.com&su=Запитване за заснемане" target="_blank" class="btn-primary">Изпрати запитване</a>
+      </div>
+      <div class="contact-card">
+        <div class="contact-detail"><span class="k">Имейл</span><span class="v">balkanbyte.studio@gmail.com</span></div>
+        <div class="contact-detail"><span class="k">Отговор</span><span class="v">ДО 24 Ч</span></div>
+        <div class="contact-detail"><span class="k">Обхват</span><span class="v">ЦЯЛА БЪЛГАРИЯ</span></div>
+      </div>
+    </div>
     <footer>
-        &copy; 2026 Balkan Byte Games. All rights reserved.
+      <span>© 2026 Skyweave Films. Всички права запазени.</span>
+      <span class="mono">SKYWEAVE / OPERATIONAL</span>
     </footer>
+  </div>
+</section>
+
+<script>
+  const burger = document.getElementById('burger');
+  const navlinks = document.getElementById('navlinks');
+  burger.addEventListener('click', () => navlinks.classList.toggle('open'));
+  navlinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navlinks.classList.remove('open')));
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, {threshold:0.15});
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  /* Preloader: animated counter, shown on every visit to the site */
+  const plPct = document.getElementById('pl-pct');
+  let pct = 0;
+  const plInterval = setInterval(() => {
+    pct += Math.floor(Math.random()*12) + 4;
+    if(pct >= 100){ pct = 100; clearInterval(plInterval); }
+    plPct.textContent = pct + '%';
+  }, 90);
+
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      pct = 100;
+      plPct.textContent = '100%';
+      clearInterval(plInterval);
+      setTimeout(() => {
+        document.getElementById('preloader').classList.add('hide');
+      }, 200);
+    }, 1000);
+  });
+
+  /* Click ripple on every button/link-button */
+  document.querySelectorAll('.btn-primary, .btn-ghost, .nav-cta').forEach(btn => {
+    btn.addEventListener('click', function(e){
+      const rect = this.getBoundingClientRect();
+      const circle = document.createElement('span');
+      const size = Math.max(rect.width, rect.height);
+      circle.classList.add('ripple');
+      circle.style.width = circle.style.height = size + 'px';
+      circle.style.left = (e.clientX - rect.left - size/2) + 'px';
+      circle.style.top = (e.clientY - rect.top - size/2) + 'px';
+      this.appendChild(circle);
+      setTimeout(() => circle.remove(), 650);
+    });
+  });
+</script>
 
 </body>
 </html>
